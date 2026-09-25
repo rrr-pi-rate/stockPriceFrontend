@@ -1,0 +1,9 @@
+services:
+  stock-price-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stockPriceFrontend
+    restart: unless-stopped
+    ports:
+      - "8081:80"

@@ -1,0 +1,52 @@
+name: Build and Deploy stockPriceFrontend
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: self-hosted
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+    concurrency:
+      group: build-stock-price-frontend-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate OpenAPI client
+        run: npm run openapi
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+  deploy:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: self-hosted
+    permissions: {}
+    concurrency:
+      group: deploy-stock-price-frontend
+      cancel-in-progress: true
+    steps:
+      - name: Deploy service
+        run: |
+          echo "Deploying..."
+          cd /home/hjalte/deploy/update
+          ./update.sh "${{ github.event.repository.name }}"
