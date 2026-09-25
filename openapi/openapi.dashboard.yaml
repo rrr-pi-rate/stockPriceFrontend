@@ -1,0 +1,48 @@
+openapi: 3.1.1
+info:
+  title: StockPriceSheetPrintService Dashboard API
+  version: 1.0.0
+servers:
+- url: http://192.168.1.239:5151/
+paths:
+  /dashboard/data:
+    get:
+      tags:
+      - Dashboard
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardDataPointDto'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardDataPointDto'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardDataPointDto'
+components:
+  schemas:
+    DashboardDataPointDto:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+        value:
+          pattern: ^-?(?:0|[1-9]\d*)(?:\.\d+)?$
+          type:
+          - number
+          - string
+          format: double
+tags:
+- name: Dashboard
