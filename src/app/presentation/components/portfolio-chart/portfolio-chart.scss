@@ -4,7 +4,10 @@
 
 .chart-wrapper {
   position: relative;
-  height: 320px;
+  height: 535px;
+  max-width: 1030px; /* samme værdi som .stats-grid */
+  margin-inline: auto;
+
 }
 
 canvas {

@@ -1,7 +1,7 @@
-<kirby-card hasPadding="true">
-  <p class="label kirby-text-small">{{ label() }}</p>
+<kirby-card hasPadding="true" style="background-color: white">
+  <p class="label kirby-text-xsmall" style="font-weight: bold">{{ label() }}</p>
   <p class="value kirby-text-large">{{ value() }}</p>
   @if (sub()) {
-    <p class="sub kirby-text-small" [class]="tone()">{{ sub() }}</p>
+    <p class="sub kirby-text-small" style="margin-top: -13px" [class]="tone()">{{ sub() }}</p>
   }
 </kirby-card>

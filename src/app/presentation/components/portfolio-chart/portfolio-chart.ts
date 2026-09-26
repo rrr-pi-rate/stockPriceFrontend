@@ -113,7 +113,7 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
     return {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 900, easing: 'easeOutExpo' },
+      animation: { duration: 1200, easing: 'easeOutQuart' },
       interaction: { mode: 'index', intersect: false },
       onHover: (_event: ChartEvent, elements: ActiveElement[], chart: Chart) => {
         const hoverableChart = chart as HoverableChart;
@@ -135,7 +135,7 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
       },
       scales: {
         x: {
-          ticks: { color: '#5c6b66', maxTicksLimit: 8 },
+          ticks: { color: '#5c6b66', maxTicksLimit: 8, maxRotation: 0, minRotation: 0 },
           grid: { color: '#eef2f0' },
         },
         y: {

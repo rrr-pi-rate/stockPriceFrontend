@@ -5,12 +5,14 @@
 kirby-card {
   display: block;
   height: 100%;
+  width: 100%;
+  themeColor: black;
 }
 
 .label {
   color: var(--kirby-text-color-semi-dark);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   margin-bottom: var(--kirby-spacing-xxs);
 }
 

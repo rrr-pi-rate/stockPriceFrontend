@@ -4,7 +4,12 @@
   max-width: 1200px;
   margin: 0 auto;
 }
-
+kirby-card {
+  display: block;
+  max-width: 1030px;
+  margin-inline: auto;
+  margin-bottom: var(--kirby-spacing-m);
+}
 .topbar {
   margin-bottom: var(--kirby-spacing-m);
 }
@@ -12,7 +17,7 @@
 .eyebrow {
   font-size: var(--kirby-font-size-xs);
   font-weight: var(--kirby-font-weight-bold);
-  color: var(--kirby-text-color-semi-dark);
+  color: var(--kirby-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: var(--kirby-spacing-xxs);
@@ -26,8 +31,10 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--kirby-spacing-s);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--kirby-spacing-xs); /* juster denne op/ned efter smag */
+  max-width: 1030px;
+  margin-inline: auto;
   margin-bottom: var(--kirby-spacing-m);
 }
 

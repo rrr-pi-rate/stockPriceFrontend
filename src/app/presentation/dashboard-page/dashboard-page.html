@@ -1,23 +1,23 @@
 <kirby-loading-overlay [isLoading]="isLoading()">
   <div class="topbar">
     <p class="eyebrow">Saxo · Nordnet · June</p>
-    <h1>Portefølje Dashboard</h1>
+    <h1>Portfolio Dashboard</h1>
   </div>
 
   <div class="stats-grid">
-    @for (card of cards(); track card.label) {
-      <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone" />
+    @for (card of cards(); track card. label) {
+      <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone"></app-stat-card>
     }
   </div>
 
   <kirby-card hasPadding="true">
-    <app-period-selector [period]="period()" (periodChange)="period.set($event)" />
+    <app-period-selector [period]="period()" (periodChange)="period.set($event)"></app-period-selector>
 
     <div class="chart-toolbar">
       <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)" />
+      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
 
       <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
         Trendlinje
@@ -29,7 +29,6 @@
     <app-portfolio-chart
       [entries]="overview()?.period.entries ?? []"
       [benchmarkLine]="overview()?.period.benchmarkLine ?? null"
-      [trendLine]="overview()?.period.trendLine ?? null"
-    />
+      [trendLine]="overview()?.period.trendLine ?? null"></app-portfolio-chart>
   </kirby-card>
 </kirby-loading-overlay>
