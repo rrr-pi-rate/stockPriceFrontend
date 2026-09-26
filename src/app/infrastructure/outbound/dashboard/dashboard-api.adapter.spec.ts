@@ -20,4 +20,22 @@ describe('DashboardApiAdapter', () => {
       { date: '2026-01-02', value: 1050 },
     ]);
   });
+
+  it('caches the underlying HTTP call so repeated subscriptions do not re-fetch', async () => {
+    const dtos: DashboardDataPointDto[] = [{ date: '2026-01-01', value: 1000 }];
+    let callCount = 0;
+    const fakeDashboardService = {
+      dashboardDataGet: () => {
+        callCount++;
+        return of(dtos);
+      },
+    } as unknown as DashboardService;
+
+    const adapter = new DashboardApiAdapter(fakeDashboardService);
+    await firstValueFrom(adapter.getHistoricalData());
+    await firstValueFrom(adapter.getHistoricalData());
+    await firstValueFrom(adapter.getHistoricalData());
+
+    expect(callCount).toBe(1);
+  });
 });
