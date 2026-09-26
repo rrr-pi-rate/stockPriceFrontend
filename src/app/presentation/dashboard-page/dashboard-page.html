@@ -1,28 +1,35 @@
-<div class="stats-grid">
-  @for (card of cards(); track card.label) {
-    <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone" />
-  }
-</div>
-
-<kirby-card hasPadding="true">
-  <app-period-selector [period]="period()" (periodChange)="period.set($event)" />
-
-  <div class="chart-toolbar">
-    <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
-      Benchmark
-    </kirby-toggle>
-    <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)" />
-
-    <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
-      Trendlinje
-    </kirby-toggle>
-
-    <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+<kirby-loading-overlay [isLoading]="isLoading()">
+  <div class="topbar">
+    <p class="eyebrow">Saxo · Nordnet · June</p>
+    <h1>Portefølje Dashboard</h1>
   </div>
 
-  <app-portfolio-chart
-    [entries]="overview()?.period.entries ?? []"
-    [benchmarkLine]="overview()?.period.benchmarkLine ?? null"
-    [trendLine]="overview()?.period.trendLine ?? null"
-  />
-</kirby-card>
+  <div class="stats-grid">
+    @for (card of cards(); track card.label) {
+      <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone" />
+    }
+  </div>
+
+  <kirby-card hasPadding="true">
+    <app-period-selector [period]="period()" (periodChange)="period.set($event)" />
+
+    <div class="chart-toolbar">
+      <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
+        Benchmark
+      </kirby-toggle>
+      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)" />
+
+      <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
+        Trendlinje
+      </kirby-toggle>
+
+      <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+    </div>
+
+    <app-portfolio-chart
+      [entries]="overview()?.period.entries ?? []"
+      [benchmarkLine]="overview()?.period.benchmarkLine ?? null"
+      [trendLine]="overview()?.period.trendLine ?? null"
+    />
+  </kirby-card>
+</kirby-loading-overlay>

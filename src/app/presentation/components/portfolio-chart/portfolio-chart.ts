@@ -16,4 +16,6 @@ export class PortfolioChart {
   protected readonly datasets = computed(() =>
     buildChartDatasets(this.entries(), this.benchmarkLine(), this.trendLine()),
   );
+
+  protected readonly labels = computed(() => this.entries().map((entry) => entry.date));
 }

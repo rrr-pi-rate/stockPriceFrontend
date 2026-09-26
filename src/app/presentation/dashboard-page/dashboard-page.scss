@@ -5,11 +5,36 @@
   margin: 0 auto;
 }
 
+.topbar {
+  margin-bottom: var(--kirby-spacing-m);
+}
+
+.eyebrow {
+  font-size: var(--kirby-font-size-xs);
+  font-weight: var(--kirby-font-weight-bold);
+  color: var(--kirby-text-color-semi-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--kirby-spacing-xxs);
+}
+
+.topbar h1 {
+  font-size: var(--kirby-font-size-xl);
+  font-weight: var(--kirby-font-weight-black);
+  margin: 0;
+}
+
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--kirby-spacing-s);
   margin-bottom: var(--kirby-spacing-m);
+}
+
+@media (max-width: 700px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .chart-toolbar {

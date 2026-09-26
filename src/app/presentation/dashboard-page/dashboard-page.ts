@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { BadgeComponent } from '@kirbydesign/designsystem/badge';
 import { CardComponent } from '@kirbydesign/designsystem/card';
+import { LoadingOverlayComponent } from '@kirbydesign/designsystem/loading-overlay';
 import { ToggleComponent } from '@kirbydesign/designsystem/toggle';
 import { switchMap } from 'rxjs';
 import { DashboardOverviewOptions } from '../../application/models/dashboard-overview.model';
@@ -25,6 +26,7 @@ import { buildStatCards } from './dashboard-stat-cards';
     BenchmarkPicker,
     ToggleComponent,
     BadgeComponent,
+    LoadingOverlayComponent,
   ],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
@@ -55,4 +57,5 @@ export class DashboardPage {
   );
 
   protected readonly cards = computed(() => buildStatCards(this.overview(), this.period()));
+  protected readonly isLoading = computed(() => this.overview() === null);
 }

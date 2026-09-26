@@ -47,9 +47,10 @@
 }
 
 h1 {
-  font-size: var(--kirby-font-size-xxl);
+  font-size: var(--kirby-font-size-xl);
   font-weight: var(--kirby-font-weight-black);
   margin-bottom: var(--kirby-spacing-xs);
+  white-space: nowrap;
 }
 
 .subtitle {
@@ -66,4 +67,10 @@ kirby-slide-button {
   margin-top: var(--kirby-spacing-m);
   font-size: var(--kirby-font-size-xs);
   color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 360px) {
+  h1 {
+    font-size: var(--kirby-font-size-l);
+  }
 }
