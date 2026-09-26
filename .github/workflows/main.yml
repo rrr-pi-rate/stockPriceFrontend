@@ -32,6 +32,8 @@ jobs:
         run: npm ci
       - name: Generate OpenAPI client
         run: npm run openapi
+      - name: Lint
+        run: npm run lint
       - name: Test
         run: npm test
       - name: Build

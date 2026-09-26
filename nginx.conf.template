@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Exact match only: the app's own "/dashboard" SPA route shares the same path segment as
+    # this API endpoint. A prefix location (e.g. "/dashboard/") also matches the try_files
+    # $uri/ fallback for the bare "/dashboard" route, which makes nginx 301-redirect it to
+    # "/dashboard/" and proxy it to the backend instead of serving the Angular app.
+    location = /dashboard/data {
+        proxy_pass ${BACKEND_BASE_URL}/dashboard/data;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

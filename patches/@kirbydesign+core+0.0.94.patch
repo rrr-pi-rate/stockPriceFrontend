@@ -1,0 +1,123 @@
+diff --git a/node_modules/@kirbydesign/core/dist/badge/badge.element.js b/node_modules/@kirbydesign/core/dist/badge/badge.element.js
+index 787749b..9ec20d8 100644
+--- a/node_modules/@kirbydesign/core/dist/badge/badge.element.js
++++ b/node_modules/@kirbydesign/core/dist/badge/badge.element.js
+@@ -6,9 +6,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
+ };
+ import { html } from 'lit';
+ import { property } from 'lit/decorators.js';
+-import KirbyElement from '../internal/kirby-element';
+-import baseStyles from '../styles/element.base.styles';
+-import styles from './badge.element.styles';
++import KirbyElement from '../internal/kirby-element.js';
++import baseStyles from '../styles/element.base.styles.js';
++import styles from './badge.element.styles.js';
+ export class KirbyBadgeElement extends KirbyElement {
+     constructor() {
+         super(...arguments);
+diff --git a/node_modules/@kirbydesign/core/dist/badge/index.js b/node_modules/@kirbydesign/core/dist/badge/index.js
+index dcd9ce3..ac7257d 100644
+--- a/node_modules/@kirbydesign/core/dist/badge/index.js
++++ b/node_modules/@kirbydesign/core/dist/badge/index.js
+@@ -1,3 +1,3 @@
+-import { KirbyBadgeElement } from './badge.element';
+-export * from './badge.element';
++import { KirbyBadgeElement } from './badge.element.js';
++export * from './badge.element.js';
+ KirbyBadgeElement.define();
+diff --git a/node_modules/@kirbydesign/core/dist/divider/divider.element.js b/node_modules/@kirbydesign/core/dist/divider/divider.element.js
+index 65b9e69..e1e426d 100644
+--- a/node_modules/@kirbydesign/core/dist/divider/divider.element.js
++++ b/node_modules/@kirbydesign/core/dist/divider/divider.element.js
+@@ -6,9 +6,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
+ };
+ import { html } from 'lit';
+ import { property } from 'lit/decorators.js';
+-import KirbyElement from '../internal/kirby-element';
+-import baseStyles from '../styles/element.base.styles';
+-import styles from './divider.element.styles';
++import KirbyElement from '../internal/kirby-element.js';
++import baseStyles from '../styles/element.base.styles.js';
++import styles from './divider.element.styles.js';
+ export class KirbyDividerElement extends KirbyElement {
+     constructor() {
+         super(...arguments);
+diff --git a/node_modules/@kirbydesign/core/dist/divider/index.js b/node_modules/@kirbydesign/core/dist/divider/index.js
+index 20d5379..cff3005 100644
+--- a/node_modules/@kirbydesign/core/dist/divider/index.js
++++ b/node_modules/@kirbydesign/core/dist/divider/index.js
+@@ -1,3 +1,3 @@
+-import { KirbyDividerElement } from './divider.element';
+-export * from './divider.element';
++import { KirbyDividerElement } from './divider.element.js';
++export * from './divider.element.js';
+ KirbyDividerElement.define();
+diff --git a/node_modules/@kirbydesign/core/dist/helpers/color-helper.js b/node_modules/@kirbydesign/core/dist/helpers/color-helper.js
+index 3e4e4cd..d46e697 100644
+--- a/node_modules/@kirbydesign/core/dist/helpers/color-helper.js
++++ b/node_modules/@kirbydesign/core/dist/helpers/color-helper.js
+@@ -1,5 +1,5 @@
+-import { styles } from './color-helper.styles';
+-import { camelToKebabCase, kebabToCamelCase } from './string-helper';
++import { styles } from './color-helper.styles.js';
++import { camelToKebabCase, kebabToCamelCase } from './string-helper.js';
+ export class ColorHelper {
+     static { this.brandColors = ColorHelper.mapToKirbyColorArray(styles.brandColors); }
+     static { this.notificationColors = ColorHelper.mapToKirbyColorArray(styles.notificationColors); }
+diff --git a/node_modules/@kirbydesign/core/dist/helpers/design-token-helper.js b/node_modules/@kirbydesign/core/dist/helpers/design-token-helper.js
+index ba23a77..b7fb234 100644
+--- a/node_modules/@kirbydesign/core/dist/helpers/design-token-helper.js
++++ b/node_modules/@kirbydesign/core/dist/helpers/design-token-helper.js
+@@ -1,5 +1,5 @@
+-import { ColorHelper } from './color-helper';
+-import { styles } from './design-token-helper.styles';
++import { ColorHelper } from './color-helper.js';
++import { styles } from './design-token-helper.styles.js';
+ export class DesignTokenHelper {
+     static { this.breakpoints = styles.breakpoints; }
+     static { this.softKeyboardTransitionEnter = styles.softKeyboardTransitionEnter; }
+diff --git a/node_modules/@kirbydesign/core/dist/helpers/index.js b/node_modules/@kirbydesign/core/dist/helpers/index.js
+index 6c6beeb..38daea9 100644
+--- a/node_modules/@kirbydesign/core/dist/helpers/index.js
++++ b/node_modules/@kirbydesign/core/dist/helpers/index.js
+@@ -1,4 +1,4 @@
+-export * from './color-helper';
+-export * from './design-token-helper';
+-export * from './theme-color.type';
+-export * from './string-helper';
++export * from './color-helper.js';
++export * from './design-token-helper.js';
++export * from './theme-color.type.js';
++export * from './string-helper.js';
+diff --git a/node_modules/@kirbydesign/core/dist/index.js b/node_modules/@kirbydesign/core/dist/index.js
+index c5f595c..6a7f276 100644
+--- a/node_modules/@kirbydesign/core/dist/index.js
++++ b/node_modules/@kirbydesign/core/dist/index.js
+@@ -1 +1 @@
+-export * from './helpers';
++export * from './helpers/index.js';
+diff --git a/node_modules/@kirbydesign/core/dist/spinner/index.js b/node_modules/@kirbydesign/core/dist/spinner/index.js
+index f0a0b47..7a0fc39 100644
+--- a/node_modules/@kirbydesign/core/dist/spinner/index.js
++++ b/node_modules/@kirbydesign/core/dist/spinner/index.js
+@@ -1,3 +1,3 @@
+-import { KirbySpinnerElement } from './spinner.element';
+-export * from './spinner.element';
++import { KirbySpinnerElement } from './spinner.element.js';
++export * from './spinner.element.js';
+ KirbySpinnerElement.define();
+diff --git a/node_modules/@kirbydesign/core/dist/spinner/spinner.element.js b/node_modules/@kirbydesign/core/dist/spinner/spinner.element.js
+index 5eb3c78..dc1e3f5 100644
+--- a/node_modules/@kirbydesign/core/dist/spinner/spinner.element.js
++++ b/node_modules/@kirbydesign/core/dist/spinner/spinner.element.js
+@@ -1,7 +1,7 @@
+ import { html } from 'lit';
+-import KirbyElement from '../internal/kirby-element';
+-import baseStyles from '../styles/element.base.styles';
+-import styles from './spinner.element.styles';
++import KirbyElement from '../internal/kirby-element.js';
++import baseStyles from '../styles/element.base.styles.js';
++import styles from './spinner.element.styles.js';
+ export class KirbySpinnerElement extends KirbyElement {
+     static { this.tagName = 'kirby-spinner'; }
+     static { this.styles = [baseStyles, styles]; }

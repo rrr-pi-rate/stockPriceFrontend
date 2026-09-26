@@ -1,0 +1,26 @@
+diff --git a/node_modules/chart.js/package.json b/node_modules/chart.js/package.json
+index b7e0e5f..a6e8da2 100644
+--- a/node_modules/chart.js/package.json
++++ b/node_modules/chart.js/package.json
+@@ -8,6 +8,21 @@
+   "unpkg": "dist/chart.min.js",
+   "main": "dist/chart.js",
+   "module": "dist/chart.mjs",
++  "exports": {
++    ".": {
++      "import": "./dist/chart.mjs",
++      "require": "./dist/chart.js"
++    },
++    "./auto": {
++      "import": "./auto/auto.mjs",
++      "require": "./auto/auto.js"
++    },
++    "./helpers": {
++      "import": "./helpers/helpers.mjs",
++      "require": "./helpers/helpers.js"
++    },
++    "./package.json": "./package.json"
++  },
+   "types": "types/index.esm.d.ts",
+   "keywords": [
+     "canvas",

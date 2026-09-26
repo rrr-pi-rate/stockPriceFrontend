@@ -39,10 +39,7 @@ components:
         date:
           type: string
         value:
-          pattern: ^-?(?:0|[1-9]\d*)(?:\.\d+)?$
-          type:
-          - number
-          - string
+          type: number
           format: double
 tags:
 - name: Dashboard

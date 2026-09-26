@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  padding: var(--kirby-spacing-m);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--kirby-spacing-s);
+  margin-bottom: var(--kirby-spacing-m);
+}
+
+.chart-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--kirby-spacing-m);
+  margin-block: var(--kirby-spacing-s);
+}

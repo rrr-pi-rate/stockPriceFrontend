@@ -5,5 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: stockPriceFrontend
     restart: unless-stopped
+    environment:
+      BACKEND_BASE_URL: http://192.168.1.239:5151
     ports:
       - "8081:80"

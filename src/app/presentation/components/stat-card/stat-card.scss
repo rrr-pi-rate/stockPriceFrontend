@@ -1,0 +1,35 @@
+:host {
+  display: contents;
+}
+
+kirby-card {
+  display: block;
+  height: 100%;
+}
+
+.label {
+  color: var(--kirby-text-color-semi-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--kirby-spacing-xxs);
+}
+
+.value {
+  font-weight: var(--kirby-font-weight-bold);
+}
+
+.sub {
+  margin-top: var(--kirby-spacing-xxxs);
+
+  &.positive {
+    color: var(--kirby-text-color-positive);
+  }
+
+  &.negative {
+    color: var(--kirby-text-color-negative);
+  }
+
+  &.neutral {
+    color: var(--kirby-text-color-semi-dark);
+  }
+}
