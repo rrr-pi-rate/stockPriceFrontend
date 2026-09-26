@@ -53,13 +53,21 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      const labels = this.entries().map((entry) => entry.date);
-      const datasets = buildChartDatasets(this.entries(), this.benchmarkLine(), this.trendLine());
+      const entries = this.entries();
+      const [portfolio, benchmark, trend] = buildChartDatasets(
+        entries,
+        this.benchmarkLine(),
+        this.trendLine(),
+      );
       if (!this.chart) return;
 
-      datasets[0] = { ...datasets[0], backgroundColor: this.createGradient() };
-      this.chart.data.labels = labels;
-      this.chart.data.datasets = datasets;
+      // Mutate the same three dataset objects created in ngAfterViewInit
+      // (only swapping their `.data`) instead of replacing them, so Chart.js
+      // can morph the line between periods the same way kirby.html does.
+      this.chart.data.labels = entries.map((entry) => entry.date);
+      this.chart.data.datasets[0].data = portfolio.data as number[];
+      this.chart.data.datasets[1].data = benchmark.data as number[];
+      this.chart.data.datasets[2].data = trend.data as number[];
       this.chart.update();
     });
   }

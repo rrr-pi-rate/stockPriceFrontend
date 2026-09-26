@@ -14,12 +14,19 @@ export interface LineChartDataset {
   readonly order: number;
 }
 
+/**
+ * Always returns all three datasets (Portefølje, Benchmark, Trend), with an
+ * empty `data` array for a disabled overlay rather than omitting it. Kept
+ * stable so the chart can mutate `.data` on the same dataset objects across
+ * updates instead of replacing them - that's what lets Chart.js morph
+ * smoothly between periods instead of popping in a "new" dataset.
+ */
 export function buildChartDatasets(
   entries: readonly PortfolioDataPoint[],
   benchmarkLine: readonly number[] | null,
   trendLine: readonly number[] | null,
 ): LineChartDataset[] {
-  const datasets: LineChartDataset[] = [
+  return [
     {
       label: 'Portefølje',
       data: entries.map((entry) => entry.value),
@@ -32,12 +39,9 @@ export function buildChartDatasets(
       tension: 0.3,
       order: 1,
     },
-  ];
-
-  if (benchmarkLine) {
-    datasets.push({
+    {
       label: 'Benchmark',
-      data: benchmarkLine,
+      data: benchmarkLine ? [...benchmarkLine] : [],
       borderColor: '#c68a00',
       backgroundColor: 'transparent',
       borderWidth: 1.5,
@@ -47,13 +51,10 @@ export function buildChartDatasets(
       fill: false,
       tension: 0.3,
       order: 2,
-    });
-  }
-
-  if (trendLine) {
-    datasets.push({
+    },
+    {
       label: 'Trend',
-      data: trendLine,
+      data: trendLine ? [...trendLine] : [],
       borderColor: 'rgba(142, 26, 51, 0.7)',
       backgroundColor: 'transparent',
       borderWidth: 1.5,
@@ -63,8 +64,6 @@ export function buildChartDatasets(
       fill: false,
       tension: 0,
       order: 3,
-    });
-  }
-
-  return datasets;
+    },
+  ];
 }
