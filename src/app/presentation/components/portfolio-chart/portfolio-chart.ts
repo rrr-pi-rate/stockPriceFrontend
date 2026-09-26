@@ -113,7 +113,7 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
     return {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 300, easing: 'easeOutQuart' },
+      animation: { duration: 900, easing: 'easeOutExpo' },
       interaction: { mode: 'index', intersect: false },
       onHover: (_event: ChartEvent, elements: ActiveElement[], chart: Chart) => {
         const hoverableChart = chart as HoverableChart;

@@ -33,7 +33,7 @@ export function buildChartDatasets(
       borderColor: '#00a976',
       backgroundColor: 'rgba(0, 169, 118, 0.2)',
       borderWidth: 2,
-      pointRadius: entries.length > 100 ? 0 : 3,
+      pointRadius: 0,
       pointHoverRadius: 5,
       fill: true,
       tension: 0.3,
