@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 320px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

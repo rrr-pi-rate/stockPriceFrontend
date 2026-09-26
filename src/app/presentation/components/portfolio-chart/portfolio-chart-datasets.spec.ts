@@ -7,13 +7,10 @@ const entries: PortfolioDataPoint[] = [
 ];
 
 describe('buildChartDatasets', () => {
-  it('always includes the portfolio dataset as {x,y} points keyed by timestamp', () => {
+  it('always includes the portfolio dataset as plain values', () => {
     const [portfolio] = buildChartDatasets(entries, null, null);
     expect(portfolio.label).toBe('Portefølje');
-    expect(portfolio.data).toEqual([
-      { x: new Date('2026-01-01').getTime(), y: 1000 },
-      { x: new Date('2026-01-02').getTime(), y: 1050 },
-    ]);
+    expect(portfolio.data).toEqual([1000, 1050]);
   });
 
   it('omits the benchmark and trend datasets when not provided', () => {
@@ -21,20 +18,16 @@ describe('buildChartDatasets', () => {
     expect(datasets).toHaveLength(1);
   });
 
-  it('adds a benchmark dataset aligned with the same timestamps when provided', () => {
+  it('adds a benchmark dataset when provided', () => {
     const datasets = buildChartDatasets(entries, [1000, 1100], null);
     expect(datasets).toHaveLength(2);
-    expect(datasets[1]).toMatchObject({ label: 'Benchmark' });
-    expect(datasets[1].data).toEqual([
-      { x: new Date('2026-01-01').getTime(), y: 1000 },
-      { x: new Date('2026-01-02').getTime(), y: 1100 },
-    ]);
+    expect(datasets[1]).toMatchObject({ label: 'Benchmark', data: [1000, 1100] });
   });
 
   it('adds a trend dataset when provided', () => {
     const datasets = buildChartDatasets(entries, null, [1010, 1040]);
     expect(datasets).toHaveLength(2);
-    expect(datasets[1]).toMatchObject({ label: 'Trend' });
+    expect(datasets[1]).toMatchObject({ label: 'Trend', data: [1010, 1040] });
   });
 
   it('includes all three datasets when both overlays are provided', () => {

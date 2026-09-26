@@ -14,6 +14,16 @@ export function formatPercentage(value: number): string {
   return `${value >= 0 ? '+' : ''}${value.toFixed(2)} %`;
 }
 
+export function formatCompactNumber(value: number): string {
+  if (Math.abs(value) >= 1e6) {
+    return (value / 1e6).toLocaleString('da-DK', { maximumFractionDigits: 1 }) + 'M';
+  }
+  if (Math.abs(value) >= 1e3) {
+    return (value / 1e3).toLocaleString('da-DK', { maximumFractionDigits: 0 }) + 'k';
+  }
+  return value.toString();
+}
+
 export function toneFor(value: number): StatCardTone {
   if (value > 0) return 'positive';
   if (value < 0) return 'negative';
