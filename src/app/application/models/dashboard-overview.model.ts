@@ -23,7 +23,7 @@ export interface DashboardPeriodView {
   readonly bestDay: BestDay | null;
   readonly volatility: number | null;
   readonly trendLine: readonly number[] | null;
-  readonly benchmarkLine: readonly number[] | null;
+  readonly benchmarkLine: readonly (number | null)[] | null;
 }
 
 export interface DashboardOverview {

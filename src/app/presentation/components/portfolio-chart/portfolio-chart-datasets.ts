@@ -2,7 +2,8 @@ import { PortfolioDataPoint } from '../../../domain/models/portfolio-data-point.
 
 export interface LineChartDataset {
   readonly label: string;
-  readonly data: readonly number[];
+  readonly data: readonly (number | null)[];
+  readonly spanGaps?: boolean;
   readonly borderColor: string;
   readonly backgroundColor: string;
   readonly borderWidth: number;
@@ -23,7 +24,7 @@ export interface LineChartDataset {
  */
 export function buildChartDatasets(
   entries: readonly PortfolioDataPoint[],
-  benchmarkLine: readonly number[] | null,
+  benchmarkLine: readonly (number | null)[] | null,
   trendLine: readonly number[] | null,
 ): LineChartDataset[] {
   return [
@@ -51,6 +52,7 @@ export function buildChartDatasets(
       fill: false,
       tension: 0.3,
       order: 2,
+      spanGaps: true,
     },
     {
       label: 'Trend',
