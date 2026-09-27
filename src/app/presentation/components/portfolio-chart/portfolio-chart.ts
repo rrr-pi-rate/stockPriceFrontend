@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, effect, input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  effect,
+  input,
+} from '@angular/core';
 import {
   ActiveElement,
   CategoryScale,
@@ -16,7 +24,15 @@ import { PortfolioDataPoint } from '../../../domain/models/portfolio-data-point.
 import { formatCompactNumber, formatCurrency } from '../../formatting/number-formatting';
 import { buildChartDatasets } from './portfolio-chart-datasets';
 
-Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip);
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Filler,
+  Tooltip,
+);
 
 type HoverableChart = Chart & { _hoverY?: number | null };
 
@@ -44,7 +60,7 @@ const crosshairPlugin = {
 })
 export class PortfolioChart implements AfterViewInit, OnDestroy {
   readonly entries = input.required<readonly PortfolioDataPoint[]>();
-  readonly benchmarkLine = input<readonly number[] | null>(null);
+  readonly benchmarkLine = input<readonly (number | null)[] | null>(null);
   readonly trendLine = input<readonly number[] | null>(null);
 
   @ViewChild('canvas') private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -66,7 +82,7 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
       // can morph the line between periods the same way kirby.html does.
       this.chart.data.labels = entries.map((entry) => entry.date);
       this.chart.data.datasets[0].data = portfolio.data as number[];
-      this.chart.data.datasets[1].data = benchmark.data as number[];
+      this.chart.data.datasets[1].data = benchmark.data as (number | null)[];
       this.chart.data.datasets[2].data = trend.data as number[];
       this.chart.update();
     });
@@ -129,7 +145,12 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            label: (ctx) => `${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}`,
+            label: (ctx) => {
+              const value = ctx.parsed.y;
+              return value == null
+                ? `${ctx.dataset.label}: —`
+                : `${ctx.dataset.label}: ${formatCurrency(value)}`;
+            },
           },
         },
       },
@@ -139,7 +160,10 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
           grid: { color: '#eef2f0' },
         },
         y: {
-          ticks: { color: '#5c6b66', callback: (value) => formatCompactNumber(Number(value)) },
+          ticks: {
+            color: '#5c6b66',
+            callback: (value) => formatCompactNumber(Number(value)),
+          },
           grid: { color: '#eef2f0' },
         },
       },

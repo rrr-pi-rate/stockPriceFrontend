@@ -16,6 +16,8 @@ import { BenchmarkRateProviderPort } from './application/ports/outbound/benchmar
 import { DashboardRepositoryPort } from './application/ports/outbound/dashboard-repository.port';
 import { StaticBenchmarkRateAdapter } from './infrastructure/outbound/benchmark/static-benchmark-rate.adapter';
 import { DashboardApiAdapter } from './infrastructure/outbound/dashboard/dashboard-api.adapter';
+import { HttpBenchmarkLineAdapter } from './infrastructure/outbound/benchmark/http-benchmark-line.adapter';
+import { BenchmarkLineProviderPort } from './application/ports/outbound/benchmark-line-provider.port';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,5 +33,6 @@ export const appConfig: ApplicationConfig = {
     provideApi(''),
     { provide: DashboardRepositoryPort, useClass: DashboardApiAdapter },
     { provide: BenchmarkRateProviderPort, useClass: StaticBenchmarkRateAdapter },
+    { provide: BenchmarkLineProviderPort, useClass: HttpBenchmarkLineAdapter },
   ],
 };
