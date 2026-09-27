@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, shareReplay } from 'rxjs/operators';
 import { DashboardService } from '@generated/api';
 import { BenchmarkLineProviderPort } from '../../../application/ports/outbound/benchmark-line-provider.port';
 import { BenchmarkKind } from '../../../domain/models/benchmark.model';
@@ -14,8 +14,11 @@ const YAHOO_SYMBOLS: Readonly<Record<'msci' | 'sp500' | 'omxc25', string>> = {
 
 @Injectable()
 export class HttpBenchmarkLineAdapter extends BenchmarkLineProviderPort {
-  private readonly dashboardService = inject(DashboardService);
   private readonly cache = new Map<BenchmarkKind, Observable<BenchmarkPoint[]>>();
+
+  constructor(private readonly dashboardService: DashboardService) {
+    super();
+  }
 
   override getBenchmarkLine(symbol: BenchmarkKind): Observable<BenchmarkPoint[]> {
     const cached = this.cache.get(symbol);
@@ -28,6 +31,11 @@ export class HttpBenchmarkLineAdapter extends BenchmarkLineProviderPort {
 
     const request$ = this.dashboardService.dashboardBenchmarkGet(yahooSymbol).pipe(
       map((dtos) => dtos.map((dto) => ({ date: dto.date, value: dto.value }))),
+      catchError((error) => {
+        // Evict so a transient failure doesn't permanently poison the cache for this symbol.
+        this.cache.delete(symbol);
+        return throwError(() => error);
+      }),
       shareReplay({ bufferSize: 1, refCount: false }),
     );
 

@@ -1,6 +1,8 @@
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { PortfolioDataPoint } from '../../domain/models/portfolio-data-point.model';
+import { BenchmarkPoint } from '../../domain/models/benchmark-point.model';
 import { BenchmarkRateProviderPort, BenchmarkRates } from '../ports/outbound/benchmark-rate-provider.port';
+import { BenchmarkLineProviderPort } from '../ports/outbound/benchmark-line-provider.port';
 import { DashboardRepositoryPort } from '../ports/outbound/dashboard-repository.port';
 import { buildOverview, GetDashboardOverviewUseCase } from './get-dashboard-overview.use-case';
 
@@ -34,7 +36,13 @@ describe('buildOverview', () => {
   });
 
   it('includes a benchmark line for the selected kind when rates are supplied', () => {
-    const overview = buildOverview(entries, { kind: 'all' }, { benchmark: 'msci' }, rates, referenceDate);
+    const overview = buildOverview(
+      entries,
+      { kind: 'all' },
+      { benchmark: 'msci' },
+      { kind: 'rate', rates },
+      referenceDate,
+    );
     expect(overview.period.benchmarkLine?.[0]).toBeCloseTo(1000, 5);
   });
 
@@ -74,26 +82,70 @@ class FakeBenchmarkRateProvider extends BenchmarkRateProviderPort {
   }
 }
 
+class FakeBenchmarkLineProvider extends BenchmarkLineProviderPort {
+  callCount = 0;
+
+  constructor(private readonly pointsToReturn: BenchmarkPoint[]) {
+    super();
+  }
+
+  override getBenchmarkLine(): Observable<BenchmarkPoint[]> {
+    this.callCount++;
+    return of(this.pointsToReturn);
+  }
+}
+
 describe('GetDashboardOverviewUseCase', () => {
-  it('does not call the rate provider when no benchmark is requested', async () => {
+  it('does not call the rate or line provider when no benchmark is requested', async () => {
     const rateProvider = new FakeBenchmarkRateProvider(rates);
-    const useCase = new GetDashboardOverviewUseCase(new FakeDashboardRepository(entries), rateProvider);
+    const lineProvider = new FakeBenchmarkLineProvider([]);
+    const useCase = new GetDashboardOverviewUseCase(
+      new FakeDashboardRepository(entries),
+      rateProvider,
+      lineProvider,
+    );
 
     const overview = await firstValueFrom(useCase.execute({ kind: 'all' }, {}, referenceDate));
 
     expect(rateProvider.callCount).toBe(0);
+    expect(lineProvider.callCount).toBe(0);
     expect(overview.period.benchmarkLine).toBeNull();
   });
 
-  it('fetches rates and builds the benchmark line when a benchmark is requested', async () => {
+  it('fetches rates and builds the benchmark line for a synthetic benchmark', async () => {
     const rateProvider = new FakeBenchmarkRateProvider(rates);
-    const useCase = new GetDashboardOverviewUseCase(new FakeDashboardRepository(entries), rateProvider);
+    const lineProvider = new FakeBenchmarkLineProvider([]);
+    const useCase = new GetDashboardOverviewUseCase(
+      new FakeDashboardRepository(entries),
+      rateProvider,
+      lineProvider,
+    );
+
+    const overview = await firstValueFrom(
+      useCase.execute({ kind: 'all' }, { benchmark: 'bonds' }, referenceDate),
+    );
+
+    expect(rateProvider.callCount).toBe(1);
+    expect(lineProvider.callCount).toBe(0);
+    expect(overview.period.benchmarkLine?.[0]).toBeCloseTo(1000, 5);
+  });
+
+  it('fetches a benchmark line for a live benchmark', async () => {
+    const rateProvider = new FakeBenchmarkRateProvider(rates);
+    const points: BenchmarkPoint[] = entries.map((entry) => ({ date: entry.date, value: 1000 }));
+    const lineProvider = new FakeBenchmarkLineProvider(points);
+    const useCase = new GetDashboardOverviewUseCase(
+      new FakeDashboardRepository(entries),
+      rateProvider,
+      lineProvider,
+    );
 
     const overview = await firstValueFrom(
       useCase.execute({ kind: 'all' }, { benchmark: 'sp500' }, referenceDate),
     );
 
-    expect(rateProvider.callCount).toBe(1);
+    expect(lineProvider.callCount).toBe(1);
+    expect(rateProvider.callCount).toBe(0);
     expect(overview.period.benchmarkLine?.[0]).toBeCloseTo(1000, 5);
   });
 });
