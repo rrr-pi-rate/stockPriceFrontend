@@ -12,6 +12,10 @@ server {
         proxy_pass ${BACKEND_BASE_URL}/dashboard/data;
     }
 
+    location = /dashboard/benchmark {
+        proxy_pass ${BACKEND_BASE_URL}/dashboard/benchmark;
+    }
+
     location / {
         try_files $uri $uri/ /index.html;
     }
