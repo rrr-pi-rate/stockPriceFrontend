@@ -162,7 +162,7 @@ export class PortfolioChart implements AfterViewInit, OnDestroy {
         y: {
           ticks: {
             color: '#5c6b66',
-            callback: (value: any) => formatCompactNumber(Number(value)),
+            callback: (value) => formatCompactNumber(Number(value)),
           },
           grid: { color: '#eef2f0' },
         },
