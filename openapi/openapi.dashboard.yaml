@@ -28,9 +28,49 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DashboardDataPointDto'
+  /dashboard/benchmark:
+    get:
+      tags:
+      - Dashboard
+      parameters:
+      - name: symbol
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenchmarkDataPointDto'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenchmarkDataPointDto'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenchmarkDataPointDto'
 components:
   schemas:
     DashboardDataPointDto:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+        value:
+          type: number
+          format: double
+    BenchmarkDataPointDto:
       required:
       - date
       - value
