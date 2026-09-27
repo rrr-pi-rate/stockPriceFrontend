@@ -21,10 +21,27 @@ export function computeBenchmarkLine(
   });
 }
 
+/**
+ * Rebases the (already DKK-converted) benchmark series to the portfolio's own starting value,
+ * so the chart shows relative performance ("what would my start value have become at the
+ * benchmark's growth rate") instead of the benchmark's unrelated absolute price level - matching
+ * how computeBenchmarkLine presents the synthetic-rate benchmarks. Anchors on the first entry
+ * date that actually has a benchmark point, not always entries[0], since portfolio and benchmark
+ * dates don't align 1:1 (see BenchmarkPoint date-alignment caveat in TODO_REAL_BENCHMARK.md).
+ */
 export function alignBenchmarkLine(
   entries: readonly PortfolioDataPoint[],
   points: readonly BenchmarkPoint[],
 ): (number | null)[] {
   const byDate = new Map(points.map((p) => [p.date, p.value]));
-  return entries.map((e) => byDate.get(e.date) ?? null);
+  const anchorIndex = entries.findIndex((e) => byDate.has(e.date));
+  if (anchorIndex === -1) return entries.map(() => null);
+
+  const anchorPortfolioValue = entries[anchorIndex].value;
+  const anchorBenchmarkValue = byDate.get(entries[anchorIndex].date)!;
+
+  return entries.map((e) => {
+    const raw = byDate.get(e.date);
+    return raw == null ? null : anchorPortfolioValue * (raw / anchorBenchmarkValue);
+  });
 }
