@@ -11,6 +11,9 @@ kirby-card {
   margin-bottom: var(--kirby-spacing-m);
 }
 .topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: var(--kirby-spacing-m);
 }
 
