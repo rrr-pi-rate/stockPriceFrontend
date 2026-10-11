@@ -25,7 +25,7 @@
     "@floating-ui/dom": "^1.1.0",
     "@fontsource/roboto": "^5.2.6",
     "@ionic/angular": "8.6.3",
-    "@kirbydesign/core": "0.0.94",
+    "@kirbydesign/core": "0.0.95",
     "@kirbydesign/designsystem": "11.11.2",
     "chart.js": "^3.9.1",
     "chartjs-adapter-date-fns": "^2.0.0",
