@@ -18,6 +18,8 @@ import { StaticBenchmarkRateAdapter } from './infrastructure/outbound/benchmark/
 import { DashboardApiAdapter } from './infrastructure/outbound/dashboard/dashboard-api.adapter';
 import { HttpBenchmarkLineAdapter } from './infrastructure/outbound/benchmark/http-benchmark-line.adapter';
 import { BenchmarkLineProviderPort } from './application/ports/outbound/benchmark-line-provider.port';
+import { VisitTrackerPort } from './application/ports/outbound/visit-tracker.port';
+import { HttpVisitTrackerAdapter } from './infrastructure/outbound/tracking/http-visit-tracker.adapter';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,5 +36,6 @@ export const appConfig: ApplicationConfig = {
     { provide: DashboardRepositoryPort, useClass: DashboardApiAdapter },
     { provide: BenchmarkRateProviderPort, useClass: StaticBenchmarkRateAdapter },
     { provide: BenchmarkLineProviderPort, useClass: HttpBenchmarkLineAdapter },
+    { provide: VisitTrackerPort, useClass: HttpVisitTrackerAdapter },
   ],
 };

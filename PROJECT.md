@@ -19,7 +19,7 @@ Ligger i `../StockPriceSheetPrintService/StockPriceSheetPrintService/wwwroot/`:
   - Custom dropdown-komponent (Kirby-design-inspireret) og toggle-knapper
   - Al beregning (statistik, benchmark-generering, trend-regression, periodefiltrering) sker client-side i vanilla JS på baggrund af ét API-kald
 
-Bemærk: `KirbyVisitTrackingMiddleware` i backend tæller besøg på disse to sider (Prometheus-metric). Det er ren backend-observability og flytter ikke med til frontend — men hvis siderne får nye URL'er/navne, skal vi huske at denne middleware bliver irrelevant/skal fjernes på et senere tidspunkt (ikke en del af dette projekt, bare en note).
+Bemærk: `KirbyVisitTrackingMiddleware` i backend tæller besøg på disse to sider (Prometheus-metric). Opdatering: tracking er genindført — frontend POST'er til `/track/landing|dashboard` ved route-navigation (`VisitTrackerPort` → `HttpVisitTrackerAdapter`), nginx proxyer til backend, som bruger samme middleware/metric. Oprindelig note: men hvis siderne får nye URL'er/navne, skal vi huske at denne middleware bliver irrelevant/skal fjernes på et senere tidspunkt (ikke en del af dette projekt, bare en note).
 
 ## Backend-kontrakt (API)
 

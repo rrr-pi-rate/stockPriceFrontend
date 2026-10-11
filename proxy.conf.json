@@ -6,5 +6,9 @@
   "/dashboard/benchmark": {
     "target": "http://192.168.1.239:5151",
     "changeOrigin": true
+  },
+  "/track": {
+    "target": "http://192.168.1.239:5151",
+    "changeOrigin": true
   }
 }
