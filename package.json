@@ -12,7 +12,7 @@
     "postinstall": "patch-package"
   },
   "private": true,
-  "packageManager": "npm@11.21.0",
+  "packageManager": "npm@12.2.0",
   "dependencies": {
     "@angular/animations": "^21.2.24",
     "@angular/cdk": "^21.2.14",
