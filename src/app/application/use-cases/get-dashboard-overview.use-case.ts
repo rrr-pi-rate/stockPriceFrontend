@@ -82,7 +82,7 @@ export class GetDashboardOverviewUseCase {
   ): Observable<DashboardOverview> {
     const source$: Observable<BenchmarkSource | null> = this.getBenchmarkSource$(options.benchmark);
 
-    return combineLatest([this.dashboardRepository.getHistoricalData(), source$]).pipe(
+    return combineLatest([this.dashboardRepository.getHistoricalData(options.dataSource), source$]).pipe(
       map(([allEntries, source]) =>
         buildOverview(allEntries, period, options, source, referenceDate),
       ),
