@@ -15,6 +15,8 @@ import { routes } from './app.routes';
 import { BenchmarkRateProviderPort } from './application/ports/outbound/benchmark-rate-provider.port';
 import { DashboardRepositoryPort } from './application/ports/outbound/dashboard-repository.port';
 import { StaticBenchmarkRateAdapter } from './infrastructure/outbound/benchmark/static-benchmark-rate.adapter';
+import { SwitchingDashboardAdapter } from './infrastructure/outbound/dashboard/switching-dashboard.adapter';
+import { FakeDashboardAdapter } from './infrastructure/outbound/dashboard/fake-dashboard.adapter';
 import { DashboardApiAdapter } from './infrastructure/outbound/dashboard/dashboard-api.adapter';
 import { HttpBenchmarkLineAdapter } from './infrastructure/outbound/benchmark/http-benchmark-line.adapter';
 import { BenchmarkLineProviderPort } from './application/ports/outbound/benchmark-line-provider.port';
@@ -33,7 +35,9 @@ export const appConfig: ApplicationConfig = {
     // Relative base path: the app calls "/dashboard/data" and relies on nginx (prod) or
     // proxy.conf.json (ng serve) to forward it to the real backend. See PROJECT.md, trin 5.
     provideApi(''),
-    { provide: DashboardRepositoryPort, useClass: DashboardApiAdapter },
+    DashboardApiAdapter,
+    FakeDashboardAdapter,
+    { provide: DashboardRepositoryPort, useClass: SwitchingDashboardAdapter },
     { provide: BenchmarkRateProviderPort, useClass: StaticBenchmarkRateAdapter },
     { provide: BenchmarkLineProviderPort, useClass: HttpBenchmarkLineAdapter },
     { provide: VisitTrackerPort, useClass: HttpVisitTrackerAdapter },

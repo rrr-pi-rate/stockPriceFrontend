@@ -1,7 +1,10 @@
 <kirby-loading-overlay [isLoading]="isLoading()">
   <div class="topbar">
-    <p class="eyebrow">Saxo · Nordnet · June</p>
-    <h1>Portfolio Dashboard</h1>
+    <div>
+      <p class="eyebrow">Saxo · Nordnet · June</p>
+      <h1>Portfolio Dashboard</h1>
+    </div>
+    <kirby-toggle [checked]="fakeData()" (checkedChange)="fakeData.set($event)" aria-label="Fake data"></kirby-toggle>
   </div>
 
   <div class="stats-grid">
