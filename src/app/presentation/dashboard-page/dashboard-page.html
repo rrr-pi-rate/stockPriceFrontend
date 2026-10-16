@@ -17,16 +17,16 @@
     <app-period-selector [period]="period()" (periodChange)="period.set($event)"></app-period-selector>
 
     <div class="chart-toolbar">
-      <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
+      <kirby-toggle class="toolbar-toggle" [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
+      <app-benchmark-picker class="toolbar-picker" [class.is-off]="!benchmarkEnabled()" [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
 
-      <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
+      <kirby-toggle class="toolbar-toggle" [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
         Trendlinje
       </kirby-toggle>
 
-      <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+      <kirby-badge class="toolbar-badge">{{ periodDescription(period()) }}</kirby-badge>
     </div>
 
     <app-portfolio-chart
@@ -40,16 +40,16 @@
   <kirby-card hasPadding="true">
     <h2 class="chart-title">Afkast i %</h2>
     <div class="chart-toolbar">
-      <kirby-toggle [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
+      <kirby-toggle class="toolbar-toggle" [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
+      <app-benchmark-picker class="toolbar-picker" [class.is-off]="!returnBenchmarkEnabled()" [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
 
-      <kirby-toggle [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
+      <kirby-toggle class="toolbar-toggle" [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
         Trendlinje
       </kirby-toggle>
 
-      <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+      <kirby-badge class="toolbar-badge">{{ periodDescription(period()) }}</kirby-badge>
     </div>
     <app-return-chart
       [entries]="periodView.entries"
