@@ -15,7 +15,7 @@ Ligger i `../StockPriceSheetPrintService/StockPriceSheetPrintService/wwwroot/`:
 - **`kirby-landing.html`** — splash-side med "slide to unlock"-interaktion, linker videre til `kirby.html`. Ren UI, ingen datalogik.
 - **`kirby.html`** — selve dashboardet. Indeholder:
   - 8 stat-cards (latest total, 1-dags ændring, YTD, total datapunkter, periode-ændring, periode-datapunkter, bedste dag, volatilitet)
-  - Chart.js-linjegraf med periode-filter (1W/1M/3M/6M/1Y/YTD/All), benchmark-overlay (MSCI/S&P500/OMXC25/inflation/obligationer — hardcodede årlige renter, ekstrapoleret fra første datapunkt), og lineær trendlinje (least-squares regression)
+  - Chart.js-linjegraf med periode-filter (1W/1M/3M/6M/1Y/YTD/All), benchmark-overlay (MSCI/S&P500/OMXC25/inflation — inflation er en hardcodet årlig rente, ekstrapoleret fra første datapunkt; obligationer er fjernet, da backendens kurser ikke indeholder udbytter), og lineær trendlinje (least-squares regression)
   - Custom dropdown-komponent (Kirby-design-inspireret) og toggle-knapper
   - Al beregning (statistik, benchmark-generering, trend-regression, periodefiltrering) sker client-side i vanilla JS på baggrund af ét API-kald
 
@@ -84,7 +84,7 @@ Hvorfor det giver mening her: al den "farlige" logik i `kirby.html` (statistik, 
   - [x] `trend.calculator.ts` — svarer til `generateTrend()` i `kirby.html`: least-squares lineær regression over indeks, rundet til hele tal. `computeTrendLine(entries): number[]`, samme længde/orden som input. 3 tests, alle grønne.
   - [x] `benchmark.calculator.ts` — svarer til `generateBenchmark()` i `kirby.html`. `computeBenchmarkLine(entries, annualRate): number[]` tager renten som et almindeligt tal og ved intet om hvor den kommer fra — se decoupling-punktet nedenfor. 3 tests, alle grønne.
 
-**Bevidst decoupling af benchmark-renter (efter ønske):** `computeBenchmarkLine` kender kun til et rente-tal, ikke til hvor det stammer fra. Selve rentetabellen (MSCI/S&P500/OMXC25/inflation/obligationer) er flyttet bag en outbound port, et lag tidligere end resten af trin 4/5, fordi det var en udtrykkelig kravsætning:
+**Bevidst decoupling af benchmark-renter (efter ønske):** `computeBenchmarkLine` kender kun til et rente-tal, ikke til hvor det stammer fra. Selve rentetabellen (MSCI/S&P500/OMXC25/inflation) er flyttet bag en outbound port, et lag tidligere end resten af trin 4/5, fordi det var en udtrykkelig kravsætning:
 - `application/ports/outbound/benchmark-rate-provider.port.ts` — `BenchmarkRateProviderPort.getAnnualRates(): Observable<BenchmarkRates>`. Returnerer en `Observable` fra starten, så et fremtidigt HTTP-kald ikke kræver en signaturændring.
 - `infrastructure/outbound/benchmark/static-benchmark-rate.adapter.ts` — nuværende implementering: samme hardcodede tabel som i `kirby.html`, pakket i `of(...)`. Skal vi senere hente satserne udefra, tilføjes bare en ny adapter (fx `HttpBenchmarkRateAdapter`) og der ændres én linje DI-wiring i `app.config.ts` — domain, resten af application og presentation rører vi ikke.
 - Endnu ikke koblet til DI i `app.config.ts` — det sker når presentation-laget rent faktisk skal bruge den (trin 5/6).

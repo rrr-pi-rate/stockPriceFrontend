@@ -23,8 +23,8 @@ describe('BenchmarkPicker', () => {
     fixture.componentInstance.benchmarkChange.subscribe((benchmark: BenchmarkKind) => (emitted = benchmark));
 
     const dropdown = fixture.debugElement.query(By.directive(DropdownComponent));
-    dropdown.triggerEventHandler('change', { id: 'bonds', text: 'Obligationer (~3% p.a.)' });
+    dropdown.triggerEventHandler('change', { id: 'inflation', text: 'Inflation (~2,5% p.a.)' });
 
-    expect(emitted).toBe('bonds');
+    expect(emitted).toBe('inflation');
   });
 });
