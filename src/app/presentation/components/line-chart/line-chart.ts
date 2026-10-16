@@ -37,6 +37,8 @@ Chart.register(
   Tooltip,
 );
 
+const MOBILE_CHART_WIDTH = 500;
+
 export interface LineChartDataset {
   readonly label: string;
   readonly data: readonly (number | null)[];
@@ -86,6 +88,8 @@ export class LineChart implements AfterViewInit, OnDestroy {
   readonly labels = input.required<readonly string[]>();
   readonly datasets = input.required<readonly LineChartDataset[]>();
   readonly height = input(400);
+  /** Højde under 700px skærmbredde. */
+  readonly mobileHeight = input(240);
   /** Unit of the values: kroner (tooltip in DKK, compact axis) or percent. */
   readonly valueFormat = input<'currency' | 'percent'>('currency');
 
@@ -160,6 +164,13 @@ export class LineChart implements AfterViewInit, OnDestroy {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 1200, easing: 'easeOutQuart' },
+      onResize: (chart, size) => {
+        const xTicks = chart.options.scales?.['x']?.ticks;
+        if (!xTicks) return;
+        const mobile = size.width < MOBILE_CHART_WIDTH;
+        xTicks.maxTicksLimit = mobile ? 3 : 8;
+        xTicks.align = mobile ? 'inner' : 'center';
+      },
       interaction: { mode: 'index', intersect: false },
       onHover: (_event: ChartEvent, elements: ActiveElement[], chart: Chart) => {
         const hoverableChart = chart as HoverableChart;
@@ -187,7 +198,13 @@ export class LineChart implements AfterViewInit, OnDestroy {
       },
       scales: {
         x: {
-          ticks: { color: '#5c6b66', maxTicksLimit: 8, maxRotation: 0, minRotation: 0 },
+          ticks: {
+            color: '#5c6b66',
+            maxTicksLimit: this.canvasRef.nativeElement.clientWidth < MOBILE_CHART_WIDTH ? 3 : 8,
+            maxRotation: 0,
+            minRotation: 0,
+            align: this.canvasRef.nativeElement.clientWidth < MOBILE_CHART_WIDTH ? 'inner' : 'center',
+          },
           grid: { color: '#eef2f0' },
         },
         y: {

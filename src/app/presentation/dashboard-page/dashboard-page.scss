@@ -47,6 +47,14 @@ kirby-card {
   }
 }
 
+@media (max-width: 700px) {
+  /* Kort i fuld skærmbredde: ophæv sidepaddingen fra :host */
+  kirby-card {
+    margin-inline: calc(-1 * var(--kirby-spacing-m));
+    border-radius: 0;
+  }
+}
+
 .chart-title {
   font-size: var(--kirby-font-size-m);
   font-weight: var(--kirby-font-weight-bold);

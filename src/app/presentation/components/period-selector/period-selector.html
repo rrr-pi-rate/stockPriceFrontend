@@ -1,4 +1,6 @@
-<kirby-segmented-control
-  [items]="options"
-  [selectedIndex]="selectedIndex()"
-  (segmentSelect)="onSegmentSelect($event)"></kirby-segmented-control>
+<div class="period-scroll">
+  <kirby-segmented-control
+    [items]="options()"
+    [selectedIndex]="selectedIndex()"
+    (segmentSelect)="onSegmentSelect($event)"></kirby-segmented-control>
+</div>

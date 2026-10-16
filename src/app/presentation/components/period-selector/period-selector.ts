@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { SegmentedControlComponent, SegmentItem } from '@kirbydesign/designsystem/segmented-control';
 import { Period, periodEquals } from '../../../domain/models/period.model';
 
@@ -20,15 +20,30 @@ const OPTIONS: readonly PeriodOption[] = [
   selector: 'app-period-selector',
   imports: [SegmentedControlComponent],
   templateUrl: './period-selector.html',
+  styleUrl: './period-selector.scss',
 })
 export class PeriodSelector {
   readonly period = input.required<Period>();
   readonly periodChange = output<Period>();
 
-  protected readonly options = OPTIONS;
+  private readonly mobile = signal(false);
+
+  /** På mobil er der ikke plads til "All history". */
+  protected readonly options = computed(() =>
+    this.mobile()
+      ? OPTIONS.map((option) => (option.id === 'all' ? { ...option, text: 'All' } : option))
+      : OPTIONS,
+  );
+
+  constructor() {
+    if (typeof window.matchMedia !== 'function') return;
+    const query = window.matchMedia('(max-width: 700px)');
+    this.mobile.set(query.matches);
+    query.addEventListener('change', (event) => this.mobile.set(event.matches));
+  }
 
   protected readonly selectedIndex = computed(() =>
-    this.options.findIndex((option) => periodEquals(option.period, this.period())),
+    OPTIONS.findIndex((option) => periodEquals(option.period, this.period())),
   );
 
   protected onSegmentSelect(option: PeriodOption): void {

@@ -6,6 +6,15 @@
   position: relative;
   max-width: 1030px; /* samme værdi som .stats-grid */
   margin-inline: auto;
+  height: var(--chart-height);
+}
+
+@media (max-width: 700px) {
+  .chart-wrapper {
+    height: var(--chart-mobile-height);
+    /* Træk grafen ud til kortets kant (kortets padding er --kirby-spacing-s) */
+    margin-inline: calc(-1 * var(--kirby-spacing-s));
+  }
 }
 
 canvas {

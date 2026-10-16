@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+/* Under 700px er der ikke plads til alle perioder: lad dem scrolle vandret i stedet for at klippe */
+.period-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.period-scroll kirby-segmented-control {
+  min-width: max-content;
+}
