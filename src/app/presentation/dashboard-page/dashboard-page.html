@@ -37,14 +37,12 @@
     </div>
     <kirby-modal flavor="drawer" [isOpen]="portfolioSettingsOpen()" (didDismiss)="portfolioSettingsOpen.set(false)">
       <ng-template>
+        <kirby-page-title>Indstillinger</kirby-page-title>
         <div class="settings-content">
-          <h2 class="settings-title">Indstillinger</h2>
           <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
             Benchmark
           </kirby-toggle>
-          @if (benchmarkEnabled()) {
           <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
-          }
           <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
             Trendlinje
           </kirby-toggle>
@@ -83,14 +81,12 @@
     </div>
     <kirby-modal flavor="drawer" [isOpen]="returnSettingsOpen()" (didDismiss)="returnSettingsOpen.set(false)">
       <ng-template>
+        <kirby-page-title>Indstillinger</kirby-page-title>
         <div class="settings-content">
-          <h2 class="settings-title">Indstillinger</h2>
           <kirby-toggle [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
             Benchmark
           </kirby-toggle>
-          @if (returnBenchmarkEnabled()) {
           <app-benchmark-picker [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
-          }
           <kirby-toggle [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
             Trendlinje
           </kirby-toggle>

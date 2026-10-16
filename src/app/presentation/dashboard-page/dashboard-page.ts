@@ -6,6 +6,7 @@ import { CardComponent } from '@kirbydesign/designsystem/card';
 import { IconComponent } from '@kirbydesign/designsystem/icon';
 import { LoadingOverlayComponent } from '@kirbydesign/designsystem/loading-overlay';
 import { ModalComponent } from '@kirbydesign/designsystem/modal';
+import { PageTitleComponent } from '@kirbydesign/designsystem/page';
 import { ToggleComponent } from '@kirbydesign/designsystem/toggle';
 import { switchMap } from 'rxjs';
 import { DashboardOverviewOptions } from '../../application/models/dashboard-overview.model';
@@ -35,6 +36,7 @@ import { buildStatCards } from './dashboard-stat-cards';
     ButtonComponent,
     IconComponent,
     ModalComponent,
+    PageTitleComponent,
   ],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',

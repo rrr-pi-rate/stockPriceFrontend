@@ -47,6 +47,13 @@ kirby-card {
   }
 }
 
+@media (max-width: 700px) {
+  /* Næsten fuld skærmbredde: ophæv sidepaddingen fra :host, men behold en smule luft */
+  kirby-card {
+    margin-inline: calc(-1 * var(--kirby-spacing-m) + var(--kirby-spacing-xxs));
+  }
+}
+
 .settings-button {
   margin-block: var(--kirby-spacing-s);
 }
