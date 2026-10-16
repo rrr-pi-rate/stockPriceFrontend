@@ -38,6 +38,7 @@ Chart.register(
 );
 
 const MOBILE_CHART_WIDTH = 500;
+const DEFAULT_MAX_Y_TICKS = 11;
 
 export interface LineChartDataset {
   readonly label: string;
@@ -90,6 +91,8 @@ export class LineChart implements AfterViewInit, OnDestroy {
   readonly height = input(400);
   /** Højde under 700px skærmbredde. */
   readonly mobileHeight = input(240);
+  /** Maks antal tal på y-aksen under 500px grafbredde (Chart.js' standard er 11). */
+  readonly mobileMaxYTicks = input(DEFAULT_MAX_Y_TICKS);
   /** Unit of the values: kroner (tooltip in DKK, compact axis) or percent. */
   readonly valueFormat = input<'currency' | 'percent'>('currency');
 
@@ -170,6 +173,8 @@ export class LineChart implements AfterViewInit, OnDestroy {
         const mobile = size.width < MOBILE_CHART_WIDTH;
         xTicks.maxTicksLimit = mobile ? 3 : 8;
         xTicks.align = mobile ? 'inner' : 'center';
+        const yTicks = chart.options.scales?.['y']?.ticks;
+        if (yTicks) yTicks.maxTicksLimit = mobile ? this.mobileMaxYTicks() : DEFAULT_MAX_Y_TICKS;
       },
       interaction: { mode: 'index', intersect: false },
       onHover: (_event: ChartEvent, elements: ActiveElement[], chart: Chart) => {
@@ -221,6 +226,10 @@ export class LineChart implements AfterViewInit, OnDestroy {
         y: {
           ticks: {
             color: '#5c6b66',
+            maxTicksLimit:
+              this.canvasRef.nativeElement.clientWidth < MOBILE_CHART_WIDTH
+                ? this.mobileMaxYTicks()
+                : DEFAULT_MAX_Y_TICKS,
             callback: (value) =>
               this.valueFormat() === 'percent'
                 ? formatAxisPercentage(Number(value))
