@@ -65,6 +65,12 @@ kirby-card {
   padding: var(--kirby-spacing-xs) var(--kirby-spacing-m) var(--kirby-spacing-xl);
 }
 
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .settings-title {
   font-size: var(--kirby-font-size-l);
   font-weight: var(--kirby-font-weight-bold);

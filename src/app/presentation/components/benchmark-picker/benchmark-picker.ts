@@ -18,10 +18,13 @@ const OPTIONS: readonly BenchmarkOption[] = [
   selector: 'app-benchmark-picker',
   imports: [DropdownComponent],
   templateUrl: './benchmark-picker.html',
+  styles: ':host { display: block; }',
 })
 export class BenchmarkPicker {
   readonly benchmark = input.required<BenchmarkKind>();
   readonly benchmarkChange = output<BenchmarkKind>();
+  /** Fylder hele linjen. */
+  readonly expand = input(false);
 
   protected readonly options = OPTIONS;
 

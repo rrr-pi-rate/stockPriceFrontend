@@ -2,4 +2,5 @@
   aria-label="Benchmark"
   [items]="options"
   [selectedIndex]="selectedIndex()"
+  [expand]="expand() ? 'block' : undefined"
   (change)="onChange($event)"></kirby-dropdown>
