@@ -6,3 +6,8 @@ html {
   padding: 0;
   height: 100vh;
 }
+
+/* Dropdown-listen (kirby-popover på body) har z-index 20002 og åbner ellers bag en modal (20003) */
+kirby-popover {
+  z-index: 30000 !important;
+}

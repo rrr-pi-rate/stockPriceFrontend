@@ -47,10 +47,37 @@ kirby-card {
   }
 }
 
+@media (max-width: 700px) {
+  /* Næsten fuld skærmbredde: ophæv sidepaddingen fra :host, men behold en smule luft */
+  kirby-card {
+    margin-inline: calc(-1 * var(--kirby-spacing-m) + var(--kirby-spacing-xxs));
+  }
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--kirby-spacing-s);
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kirby-spacing-m);
+  padding: var(--kirby-spacing-xs) var(--kirby-spacing-m) var(--kirby-spacing-xl);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .chart-title {
   font-size: var(--kirby-font-size-m);
   font-weight: var(--kirby-font-weight-bold);
-  margin: 0 0 var(--kirby-spacing-s);
+  margin: 0;
 }
 
 .chart-toolbar {
@@ -59,4 +86,19 @@ kirby-card {
   align-items: center;
   gap: var(--kirby-spacing-m);
   margin-block: var(--kirby-spacing-s);
+}
+
+/* Skal ligge efter de øvrige regler, så display: none vinder over fx .chart-toolbar */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
 }

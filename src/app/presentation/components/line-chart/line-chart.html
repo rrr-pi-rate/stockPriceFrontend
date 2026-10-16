@@ -1,3 +1,6 @@
-<div class="chart-wrapper" [style.height.px]="height()">
+<div
+  class="chart-wrapper"
+  [style.--chart-height.px]="height()"
+  [style.--chart-mobile-height.px]="mobileHeight()">
   <canvas #canvas></canvas>
 </div>

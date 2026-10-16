@@ -14,9 +14,16 @@
   </div>
 
   <kirby-card hasPadding="true">
+    <div class="chart-header">
+      <h2 class="chart-title">Porteføljeværdi</h2>
+      <button class="mobile-only" kirby-button attentionLevel="3" size="sm" (click)="portfolioSettingsOpen.set(true)">
+        <kirby-icon name="cog"></kirby-icon>
+        Indstillinger
+      </button>
+    </div>
     <app-period-selector [period]="period()" (periodChange)="period.set($event)"></app-period-selector>
 
-    <div class="chart-toolbar">
+    <div class="chart-toolbar desktop-only">
       <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
@@ -29,28 +36,76 @@
       <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
     </div>
 
+    <kirby-modal flavor="drawer" [isOpen]="portfolioSettingsOpen()" (didDismiss)="portfolioSettingsOpen.set(false)">
+      <ng-template>
+        <kirby-page-title>Indstillinger</kirby-page-title>
+        <div class="settings-content">
+          <div class="settings-row">
+            <span>Trendlinje</span>
+            <kirby-toggle aria-label="Trendlinje" [checked]="trendEnabled()"
+                          (checkedChange)="trendEnabled.set($event)"></kirby-toggle>
+          </div>
+          <div class="settings-row">
+            <span>Benchmark</span>
+            <kirby-toggle aria-label="Benchmark" [checked]="benchmarkEnabled()"
+                          (checkedChange)="benchmarkEnabled.set($event)"></kirby-toggle>
+          </div>
+          <app-benchmark-picker [expand]="true" [benchmark]="benchmark()"
+                                (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
+        </div>
+      </ng-template>
+    </kirby-modal>
+
     <app-portfolio-chart
       [entries]="overview()?.period.entries ?? []"
       [benchmarkLine]="overview()?.period.benchmarkLine ?? null"
       [trendLine]="overview()?.period.trendLine ?? null"></app-portfolio-chart>
   </kirby-card>
 
-  @if (overview()?.period; as periodView) {
+  @if (returnOverview()?.period; as periodView) {
   @if (periodView.returnPercentLine; as returnPercentLine) {
   <kirby-card hasPadding="true">
-    <h2 class="chart-title">Afkast i %</h2>
-    <div class="chart-toolbar">
+    <div class="chart-header">
+      <h2 class="chart-title">Afkast i %</h2>
+      <button class="mobile-only" kirby-button attentionLevel="3" size="sm" (click)="returnSettingsOpen.set(true)">
+        <kirby-icon name="cog"></kirby-icon>
+        Indstillinger
+      </button>
+    </div>
+    <app-period-selector [period]="returnPeriod()" (periodChange)="returnPeriod.set($event)"></app-period-selector>
+    <div class="chart-toolbar desktop-only">
       <kirby-toggle [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
+      <app-benchmark-picker [benchmark]="returnBenchmark()"
+                            (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
 
       <kirby-toggle [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
         Trendlinje
       </kirby-toggle>
 
-      <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+      <kirby-badge>{{ periodDescription(returnPeriod()) }}</kirby-badge>
     </div>
+
+    <kirby-modal flavor="drawer" [isOpen]="returnSettingsOpen()" (didDismiss)="returnSettingsOpen.set(false)">
+      <ng-template>
+        <kirby-page-title>Indstillinger</kirby-page-title>
+        <div class="settings-content">
+          <div class="settings-row">
+            <span>Trendlinje</span>
+            <kirby-toggle [checked]="returnTrendEnabled()"
+                          (checkedChange)="returnTrendEnabled.set($event)"></kirby-toggle>
+          </div>
+          <div class="settings-row">
+            <span>Benchmark</span>
+            <kirby-toggle [checked]="returnBenchmarkEnabled()"
+                          (checkedChange)="returnBenchmarkEnabled.set($event)"></kirby-toggle>
+          </div>
+          <app-benchmark-picker [expand]="true " [benchmark]="returnBenchmark()"
+                                (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
+        </div>
+      </ng-template>
+    </kirby-modal>
     <app-return-chart
       [entries]="periodView.entries"
       [returnPercentLine]="returnPercentLine"
