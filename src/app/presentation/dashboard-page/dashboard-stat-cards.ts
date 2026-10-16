@@ -17,9 +17,9 @@ const PLACEHOLDER_LABELS = [
   'YTD change',
   'Total data points',
   'Change in the period',
+  'Return in the period',
   'Data points in the period',
   'Best day in the period',
-  'Volatility (std. dev.)',
 ] as const;
 
 export function buildStatCards(
@@ -62,6 +62,12 @@ export function buildStatCards(
       tone: period.change ? toneFor(period.change.absolute) : undefined,
     },
     {
+      label: 'Return in the period',
+      value: period.change ? formatPercentage(period.change.percentage) : '—',
+      sub: period.change ? formatCurrency(period.change.absolute) : '—',
+      tone: period.change ? toneFor(period.change.absolute) : undefined,
+    },
+    {
       label: 'Data points in the period',
       value: String(period.pointCount),
       sub: `af ${summary.totalDataPoints} total · ${periodDescription(selectedPeriod)}`,
@@ -71,11 +77,6 @@ export function buildStatCards(
       value: period.bestDay ? formatCurrency(period.bestDay.change) : '—',
       sub: period.bestDay?.date ?? '—',
       tone: period.bestDay ? toneFor(period.bestDay.change) : undefined,
-    },
-    {
-      label: 'Volatility (std. dev.)',
-      value: period.volatility != null ? '±' + formatCurrency(Math.round(period.volatility)) : '—',
-      sub: period.volatility != null ? 'per day in the period' : 'not enough data',
     },
   ];
 }
