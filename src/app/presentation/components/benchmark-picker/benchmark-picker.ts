@@ -12,7 +12,6 @@ const OPTIONS: readonly BenchmarkOption[] = [
   { id: 'sp500', text: 'S&P 500 (~11% p.a.)' },
   { id: 'omxc25', text: 'OMXC25 (~8% p.a.)' },
   { id: 'inflation', text: 'Inflation (~2,5% p.a.)' },
-  { id: 'bonds', text: 'Obligationer (~3% p.a.)' },
 ];
 
 @Component({

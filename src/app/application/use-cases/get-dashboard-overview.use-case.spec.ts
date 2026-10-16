@@ -15,7 +15,7 @@ const entries: PortfolioDataPoint[] = [
   { date: '2026-01-05', value: 1080 },
 ];
 
-const rates: BenchmarkRates = { msci: 0.1, sp500: 0.11, omxc25: 0.08, inflation: 0.025, bonds: 0.03 };
+const rates: BenchmarkRates = { msci: 0.1, sp500: 0.11, omxc25: 0.08, inflation: 0.025 };
 const referenceDate = new Date('2026-09-26T00:00:00Z');
 
 describe('buildOverview', () => {
@@ -149,7 +149,7 @@ describe('GetDashboardOverviewUseCase', () => {
     );
 
     const overview = await firstValueFrom(
-      useCase.execute({ kind: 'all' }, { benchmark: 'bonds' }, referenceDate),
+      useCase.execute({ kind: 'all' }, { benchmark: 'inflation' }, referenceDate),
     );
 
     expect(rateProvider.callCount).toBe(1);

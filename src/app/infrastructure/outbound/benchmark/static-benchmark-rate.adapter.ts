@@ -10,7 +10,6 @@ const ANNUAL_RATES: BenchmarkRates = {
   sp500: 0.11,
   omxc25: 0.08,
   inflation: 0.025,
-  bonds: 0.03,
 };
 
 @Injectable()
