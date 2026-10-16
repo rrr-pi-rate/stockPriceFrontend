@@ -14,7 +14,9 @@ import {
   volatility,
   yearToDateChange,
 } from '../../domain/calculations/portfolio-stats.calculator';
+import { computeReturnLine } from '../../domain/calculations/return.calculator';
 import { computeTrendLine } from '../../domain/calculations/trend.calculator';
+import { Deposit } from '../../domain/models/deposit.model';
 import { Period } from '../../domain/models/period.model';
 import { PortfolioDataPoint } from '../../domain/models/portfolio-data-point.model';
 import { DashboardOverview, DashboardOverviewOptions } from '../models/dashboard-overview.model';
@@ -37,6 +39,7 @@ export function buildOverview(
   options: DashboardOverviewOptions,
   benchmarkSource: BenchmarkSource | null,
   referenceDate: Date = new Date(),
+  deposits: readonly Deposit[] = [],
 ): DashboardOverview {
   const periodEntries = filterByPeriod(allEntries, period, referenceDate);
 
@@ -63,6 +66,7 @@ export function buildOverview(
       volatility: volatility(periodEntries),
       trendLine: options.includeTrend ? computeTrendLine(periodEntries) : null,
       benchmarkLine,
+      returnLine: deposits.length > 0 ? computeReturnLine(periodEntries, deposits) : null,
     },
   };
 }
@@ -82,9 +86,13 @@ export class GetDashboardOverviewUseCase {
   ): Observable<DashboardOverview> {
     const source$: Observable<BenchmarkSource | null> = this.getBenchmarkSource$(options.benchmark);
 
-    return combineLatest([this.dashboardRepository.getHistoricalData(options.dataSource), source$]).pipe(
-      map(([allEntries, source]) =>
-        buildOverview(allEntries, period, options, source, referenceDate),
+    return combineLatest([
+      this.dashboardRepository.getHistoricalData(options.dataSource),
+      source$,
+      this.dashboardRepository.getDeposits(options.dataSource),
+    ]).pipe(
+      map(([allEntries, source, deposits]) =>
+        buildOverview(allEntries, period, options, source, referenceDate, deposits),
       ),
     );
   }

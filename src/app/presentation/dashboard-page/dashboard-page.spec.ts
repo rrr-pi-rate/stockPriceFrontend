@@ -20,6 +20,7 @@ const overview: DashboardOverview = {
     volatility: 40.62,
     trendLine: null,
     benchmarkLine: null,
+    returnLine: null,
   },
 };
 

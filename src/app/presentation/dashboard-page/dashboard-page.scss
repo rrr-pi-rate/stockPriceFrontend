@@ -47,6 +47,12 @@ kirby-card {
   }
 }
 
+.chart-title {
+  font-size: var(--kirby-font-size-m);
+  font-weight: var(--kirby-font-weight-bold);
+  margin: 0 0 var(--kirby-spacing-s);
+}
+
 .chart-toolbar {
   display: flex;
   flex-wrap: wrap;

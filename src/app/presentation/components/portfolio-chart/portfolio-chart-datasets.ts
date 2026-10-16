@@ -1,19 +1,5 @@
 import { PortfolioDataPoint } from '../../../domain/models/portfolio-data-point.model';
-
-export interface LineChartDataset {
-  readonly label: string;
-  readonly data: readonly (number | null)[];
-  readonly spanGaps?: boolean;
-  readonly borderColor: string;
-  readonly backgroundColor: string;
-  readonly borderWidth: number;
-  readonly borderDash?: readonly number[];
-  readonly pointRadius: number;
-  readonly pointHoverRadius: number;
-  readonly fill: boolean;
-  readonly tension: number;
-  readonly order: number;
-}
+import { LineChartDataset } from '../line-chart/line-chart';
 
 /**
  * Always returns all three datasets (Portefølje, Benchmark, Trend), with an
