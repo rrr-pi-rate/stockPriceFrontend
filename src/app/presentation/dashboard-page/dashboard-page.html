@@ -34,4 +34,13 @@
       [benchmarkLine]="overview()?.period.benchmarkLine ?? null"
       [trendLine]="overview()?.period.trendLine ?? null"></app-portfolio-chart>
   </kirby-card>
+
+  @if (overview()?.period; as periodView) {
+    @if (periodView.returnLine; as returnLine) {
+      <kirby-card hasPadding="true">
+        <h2 class="chart-title">Afkast (værdi minus indbetalinger)</h2>
+        <app-return-chart [entries]="periodView.entries" [returnLine]="returnLine"></app-return-chart>
+      </kirby-card>
+    }
+  }
 </kirby-loading-overlay>

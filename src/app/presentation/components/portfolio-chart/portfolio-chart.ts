@@ -34,9 +34,9 @@ Chart.register(
   Tooltip,
 );
 
-type HoverableChart = Chart & { _hoverY?: number | null };
+export type HoverableChart = Chart & { _hoverY?: number | null };
 
-const crosshairPlugin = {
+export const crosshairPlugin = {
   id: 'crosshair',
   afterDraw(chart: HoverableChart) {
     if (chart._hoverY == null) return;

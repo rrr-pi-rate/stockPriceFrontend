@@ -25,6 +25,8 @@ export interface DashboardPeriodView {
   readonly volatility: number | null;
   readonly trendLine: readonly number[] | null;
   readonly benchmarkLine: readonly (number | null)[] | null;
+  /** Value minus cumulative deposits per entry; null when no deposits are known. */
+  readonly returnLine: readonly number[] | null;
 }
 
 export interface DashboardOverview {

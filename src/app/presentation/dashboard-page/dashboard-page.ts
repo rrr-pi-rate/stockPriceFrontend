@@ -12,6 +12,7 @@ import { Period } from '../../domain/models/period.model';
 import { BenchmarkPicker } from '../components/benchmark-picker/benchmark-picker';
 import { PeriodSelector } from '../components/period-selector/period-selector';
 import { PortfolioChart } from '../components/portfolio-chart/portfolio-chart';
+import { ReturnChart } from '../components/return-chart/return-chart';
 import { StatCard } from '../components/stat-card/stat-card';
 import { periodDescription } from '../formatting/period-label';
 import { buildStatCards } from './dashboard-stat-cards';
@@ -22,6 +23,7 @@ import { buildStatCards } from './dashboard-stat-cards';
     StatCard,
     PeriodSelector,
     PortfolioChart,
+    ReturnChart,
     CardComponent,
     BenchmarkPicker,
     ToggleComponent,

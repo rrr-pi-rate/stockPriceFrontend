@@ -57,6 +57,28 @@ describe('buildOverview', () => {
     expect(overview.summary.totalDataPoints).toBe(5);
     expect(overview.period.entries).toEqual([entries[4]]);
   });
+
+  it('has no return line without deposits', () => {
+    const overview = buildOverview(entries, { kind: 'all' }, {}, null, referenceDate);
+    expect(overview.period.returnLine).toBeNull();
+  });
+
+  it('subtracts cumulative deposits from the value, using deposits from before the period', () => {
+    const periodReferenceDate = new Date('2026-01-05T00:00:00Z');
+    const deposits = [
+      { date: '2026-01-01', amount: 1000 },
+      { date: '2026-01-04', amount: 50 },
+    ];
+    const overview = buildOverview(
+      entries,
+      { kind: 'trailing-days', days: 1 },
+      {},
+      null,
+      periodReferenceDate,
+      deposits,
+    );
+    expect(overview.period.returnLine).toEqual([50, 30]);
+  });
 });
 
 class FakeDashboardRepository extends DashboardRepositoryPort {

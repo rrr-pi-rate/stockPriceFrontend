@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 400px;
+  max-width: 1030px; /* samme værdi som .stats-grid */
+  margin-inline: auto;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
