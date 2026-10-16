@@ -23,10 +23,11 @@ Bemærk: `KirbyVisitTrackingMiddleware` i backend tæller besøg på disse to si
 
 ## Backend-kontrakt (API)
 
-Kun ét endpoint eksponeret indtil videre:
+Endpoints (se spec for alle):
 
 ```
 GET /dashboard/data → DashboardDataPointDto[] { date: string (yyyy-MM-dd), value: number }
+GET /dashboard/transactions → DashboardTransactionDto[] { bookingId: string, amount: number, date: string (yyyy-MM-dd) }
 ```
 
 Spec ligger i `openapi/openapi.dashboard.yaml` (OpenAPI 3.1.1). `DashboardController.cs` og `IDashboardService` (backend) er source of truth for kontrakten — spec'en skal genereres/holdes i sync derfra, ikke omvendt.

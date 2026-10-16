@@ -16,6 +16,10 @@ server {
         proxy_pass ${BACKEND_BASE_URL}/dashboard/benchmark;
     }
 
+    location = /dashboard/transactions {
+        proxy_pass ${BACKEND_BASE_URL}/dashboard/transactions;
+    }
+
     # Visit tracking (IP/OS -> Prometheus + Loki in the backend). Cloudflare's CF-Connecting-IP
     # header is passed through by default; X-Forwarded-For/X-Real-IP cover non-Cloudflare access.
     location ~ ^/track/(landing|dashboard)$ {
