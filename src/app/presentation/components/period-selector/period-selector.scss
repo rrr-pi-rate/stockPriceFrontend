@@ -10,8 +10,7 @@
 .period-scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  /* Plads til segmentets skygge, som ellers klippes af overflow-y: hidden */
-  padding-block: var(--kirby-spacing-xxs);
+  border-radius: var(--kirby-border-radius-pill);
   scrollbar-width: none;
 }
 
@@ -36,12 +35,17 @@
   font-size: var(--kirby-font-size-l);
   line-height: 1;
   pointer-events: none;
+  box-sizing: border-box;
+  padding-bottom: 0.11em;
 
   &.left {
     left: var(--kirby-spacing-xxs);
+    padding-right: 0.1em;
   }
 
   &.right {
     right: var(--kirby-spacing-xxs);
+    padding-left: 0.1em;
+
   }
 }
