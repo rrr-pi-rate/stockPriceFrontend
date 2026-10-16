@@ -198,11 +198,22 @@ export class LineChart implements AfterViewInit, OnDestroy {
       },
       scales: {
         x: {
+          afterBuildTicks: (scale) => {
+            const count = scale.ticks.length;
+            const limit = scale.options.ticks.maxTicksLimit ?? count;
+            if (count <= limit) return;
+            // Tæl baglæns fra det nyeste punkt med jævn afstand
+            const step = Math.ceil((count - 1) / (limit - 1));
+            const ticks = [];
+            for (let i = count - 1; i >= 0; i -= step) ticks.unshift({ value: i });
+            scale.ticks = ticks;
+          },
           ticks: {
             color: '#5c6b66',
             maxTicksLimit: this.canvasRef.nativeElement.clientWidth < MOBILE_CHART_WIDTH ? 3 : 8,
             maxRotation: 0,
             minRotation: 0,
+            autoSkip: false, // ticks vælges i afterBuildTicks, så den nyeste dato altid er med
             align: this.canvasRef.nativeElement.clientWidth < MOBILE_CHART_WIDTH ? 'inner' : 'center',
           },
           grid: { color: '#eef2f0' },

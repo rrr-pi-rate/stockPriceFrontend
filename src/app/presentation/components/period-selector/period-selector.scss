@@ -2,12 +2,46 @@
   display: block;
 }
 
+.period-wrapper {
+  position: relative;
+}
+
 /* Under 700px er der ikke plads til alle perioder: lad dem scrolle vandret i stedet for at klippe */
 .period-scroll {
   overflow-x: auto;
+  overflow-y: hidden;
+  /* Plads til segmentets skygge, som ellers klippes af overflow-y: hidden */
+  padding-block: var(--kirby-spacing-xxs);
   scrollbar-width: none;
 }
 
 .period-scroll kirby-segmented-control {
   min-width: max-content;
+}
+
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--kirby-spacing-l);
+  height: var(--kirby-spacing-l);
+  border-radius: 50%;
+  background: var(--kirby-white);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  color: var(--kirby-text-color);
+  font-size: var(--kirby-font-size-l);
+  line-height: 1;
+  pointer-events: none;
+
+  &.left {
+    left: var(--kirby-spacing-xxs);
+  }
+
+  &.right {
+    right: var(--kirby-spacing-xxs);
+  }
 }

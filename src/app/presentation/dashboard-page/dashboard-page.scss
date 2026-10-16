@@ -48,10 +48,9 @@ kirby-card {
 }
 
 @media (max-width: 700px) {
-  /* Kort i fuld skærmbredde: ophæv sidepaddingen fra :host */
+  /* Næsten fuld skærmbredde: ophæv sidepaddingen fra :host, men behold en smule luft */
   kirby-card {
-    margin-inline: calc(-1 * var(--kirby-spacing-m));
-    border-radius: 0;
+    margin-inline: calc(-1 * var(--kirby-spacing-m) + var(--kirby-spacing-xxs));
   }
 
   /* Toolbar: de to toggles side om side, vælger på egen række (kun når slået til), badge nederst */

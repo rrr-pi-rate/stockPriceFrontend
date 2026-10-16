@@ -1,6 +1,15 @@
-<div class="period-scroll">
-  <kirby-segmented-control
-    [items]="options()"
-    [selectedIndex]="selectedIndex()"
-    (segmentSelect)="onSegmentSelect($event)"></kirby-segmented-control>
+<div class="period-wrapper">
+  @if (canScrollLeft()) {
+    <span class="scroll-arrow left" aria-hidden="true">‹</span>
+  }
+  <div #scroller class="period-scroll" (scroll)="updateScrollState()">
+    <kirby-segmented-control
+      [items]="options()"
+      [selectedIndex]="selectedIndex()"
+      [disableChangeOnSwipe]="true"
+      (segmentSelect)="onSegmentSelect($event)"></kirby-segmented-control>
+  </div>
+  @if (canScrollRight()) {
+    <span class="scroll-arrow right" aria-hidden="true">›</span>
+  }
 </div>
