@@ -27,6 +27,8 @@ export interface DashboardPeriodView {
   readonly benchmarkLine: readonly (number | null)[] | null;
   /** Value minus cumulative deposits per entry; null when no deposits are known. */
   readonly returnLine: readonly number[] | null;
+  /** Deposit-adjusted return over the period (DKK and %); null without deposits or enough data. */
+  readonly periodReturn: ValueChange | null;
 }
 
 export interface DashboardOverview {

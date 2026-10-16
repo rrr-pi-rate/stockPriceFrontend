@@ -21,6 +21,7 @@ const overview: DashboardOverview = {
     trendLine: null,
     benchmarkLine: null,
     returnLine: null,
+    periodReturn: null,
   },
 };
 

@@ -63,9 +63,9 @@ export function buildStatCards(
     },
     {
       label: 'Return in the period',
-      value: period.change ? formatPercentage(period.change.percentage) : '—',
-      sub: period.change ? formatCurrency(period.change.absolute) : '—',
-      tone: period.change ? toneFor(period.change.absolute) : undefined,
+      value: period.periodReturn ? formatPercentage(period.periodReturn.percentage) : '—',
+      sub: period.periodReturn ? formatCurrency(period.periodReturn.absolute) : '—',
+      tone: period.periodReturn ? toneFor(period.periodReturn.absolute) : undefined,
     },
     {
       label: 'Data points in the period',

@@ -14,7 +14,7 @@ import {
   volatility,
   yearToDateChange,
 } from '../../domain/calculations/portfolio-stats.calculator';
-import { computeReturnLine } from '../../domain/calculations/return.calculator';
+import { computePeriodReturn, computeReturnLine } from '../../domain/calculations/return.calculator';
 import { computeTrendLine } from '../../domain/calculations/trend.calculator';
 import { Deposit } from '../../domain/models/deposit.model';
 import { Period } from '../../domain/models/period.model';
@@ -67,6 +67,7 @@ export function buildOverview(
       trendLine: options.includeTrend ? computeTrendLine(periodEntries) : null,
       benchmarkLine,
       returnLine: deposits.length > 0 ? computeReturnLine(periodEntries, deposits) : null,
+      periodReturn: deposits.length > 0 ? computePeriodReturn(periodEntries, deposits) : null,
     },
   };
 }

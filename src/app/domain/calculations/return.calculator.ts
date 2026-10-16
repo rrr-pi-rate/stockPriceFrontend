@@ -22,3 +22,35 @@ export function computeReturnLine(
     return entry.value - deposited;
   });
 }
+
+/**
+ * Real return over `entries` (one period): the gain not explained by deposits, in DKK and %.
+ * Amount = return at the end minus return at the start (see computeReturnLine). Percentage uses
+ * Modified Dietz: gain divided by the start value plus each in-period deposit weighted by how
+ * long it was invested, so a deposit made late in the period counts for less than an early one.
+ * Deposits dated on the first entry are already part of its start value. Null with fewer than
+ * two entries, or when there is no capital to relate the gain to.
+ */
+export function computePeriodReturn(
+  entries: readonly PortfolioDataPoint[],
+  deposits: readonly Deposit[],
+): { readonly absolute: number; readonly percentage: number } | null {
+  if (entries.length < 2) return null;
+
+  const first = entries[0];
+  const last = entries[entries.length - 1];
+  const line = computeReturnLine([first, last], deposits);
+  const absolute = line[1] - line[0];
+
+  const endTime = Date.parse(last.date);
+  const totalTime = endTime - Date.parse(first.date);
+  const weightedDeposits = deposits
+    .filter((deposit) => deposit.date > first.date && deposit.date <= last.date)
+    .reduce(
+      (sum, deposit) => sum + deposit.amount * ((endTime - Date.parse(deposit.date)) / totalTime),
+      0,
+    );
+
+  const capital = first.value + weightedDeposits;
+  return capital > 0 ? { absolute, percentage: (absolute / capital) * 100 } : null;
+}
