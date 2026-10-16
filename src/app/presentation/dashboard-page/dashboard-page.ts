@@ -1,8 +1,16 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { BadgeComponent } from '@kirbydesign/designsystem/badge';
+import { ButtonComponent } from '@kirbydesign/designsystem/button';
 import { CardComponent } from '@kirbydesign/designsystem/card';
+import { IconComponent } from '@kirbydesign/designsystem/icon';
 import { LoadingOverlayComponent } from '@kirbydesign/designsystem/loading-overlay';
+import { ModalComponent } from '@kirbydesign/designsystem/modal';
+import {
+  PageComponent,
+  PageContentComponent,
+  PageTitleComponent,
+} from '@kirbydesign/designsystem/page';
 import { ToggleComponent } from '@kirbydesign/designsystem/toggle';
 import { switchMap } from 'rxjs';
 import { DashboardOverviewOptions } from '../../application/models/dashboard-overview.model';
@@ -29,6 +37,12 @@ import { buildStatCards } from './dashboard-stat-cards';
     ToggleComponent,
     BadgeComponent,
     LoadingOverlayComponent,
+    ButtonComponent,
+    IconComponent,
+    ModalComponent,
+    PageComponent,
+    PageTitleComponent,
+    PageContentComponent,
   ],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
@@ -44,6 +58,8 @@ export class DashboardPage {
   protected readonly returnBenchmark = signal<BenchmarkKind>('msci');
   protected readonly returnTrendEnabled = signal(false);
   protected readonly fakeData = signal(true);
+  protected readonly portfolioSettingsOpen = signal(false);
+  protected readonly returnSettingsOpen = signal(false);
 
   protected readonly periodDescription = periodDescription;
 

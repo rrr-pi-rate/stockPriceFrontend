@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideKirby } from '@kirbydesign/designsystem/config';
 import { of } from 'rxjs';
 import { DashboardOverview } from '../../application/models/dashboard-overview.model';
 import { GetDashboardOverviewUseCase } from '../../application/use-cases/get-dashboard-overview.use-case';
@@ -31,7 +33,11 @@ describe('DashboardPage', () => {
   it('renders 8 stat cards from the use-case result', async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardPage],
-      providers: [{ provide: GetDashboardOverviewUseCase, useValue: { execute: () => of(overview) } }],
+      providers: [
+        provideKirby(),
+        provideRouter([]),
+        { provide: GetDashboardOverviewUseCase, useValue: { execute: () => of(overview) } },
+      ],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(DashboardPage);
@@ -48,7 +54,11 @@ describe('DashboardPage', () => {
   it('renders 8 placeholder cards while the use-case has not emitted yet', async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardPage],
-      providers: [{ provide: GetDashboardOverviewUseCase, useValue: { execute: () => of() } }],
+      providers: [
+        provideKirby(),
+        provideRouter([]),
+        { provide: GetDashboardOverviewUseCase, useValue: { execute: () => of() } },
+      ],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(DashboardPage);

@@ -47,6 +47,31 @@ kirby-card {
   }
 }
 
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+}
+
+.settings-button {
+  margin-block: var(--kirby-spacing-s);
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kirby-spacing-m);
+  padding-bottom: var(--kirby-spacing-l);
+}
+
 .chart-title {
   font-size: var(--kirby-font-size-m);
   font-weight: var(--kirby-font-weight-bold);
