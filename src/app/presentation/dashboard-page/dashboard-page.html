@@ -9,7 +9,7 @@
 
   <div class="stats-grid">
     @for (card of cards(); track card. label) {
-      <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone"></app-stat-card>
+    <app-stat-card [label]="card.label" [value]="card.value" [sub]="card.sub" [tone]="card.tone"></app-stat-card>
     }
   </div>
 
@@ -36,11 +36,23 @@
   </kirby-card>
 
   @if (overview()?.period; as periodView) {
-    @if (periodView.returnLine; as returnLine) {
-      <kirby-card hasPadding="true">
-        <h2 class="chart-title">Afkast (værdi minus indbetalinger)</h2>
-        <app-return-chart [entries]="periodView.entries" [returnLine]="returnLine"></app-return-chart>
-      </kirby-card>
-    }
+  @if (periodView.returnLine; as returnLine) {
+  <kirby-card hasPadding="true">
+    <h2 class="chart-title">Afkast i %</h2>
+    <div class="chart-toolbar">
+      <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
+        Benchmark
+      </kirby-toggle>
+      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
+
+      <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
+        Trendlinje
+      </kirby-toggle>
+
+      <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
+    </div>
+    <app-return-chart [entries]="periodView.entries" [returnLine]="returnLine"></app-return-chart>
+  </kirby-card>
+  }
   }
 </kirby-loading-overlay>
