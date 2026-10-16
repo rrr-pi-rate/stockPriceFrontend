@@ -16,6 +16,10 @@ server {
         proxy_pass ${BACKEND_BASE_URL}/dashboard/benchmark;
     }
 
+    location = /dashboard/inflation {
+        proxy_pass ${BACKEND_BASE_URL}/dashboard/inflation;
+    }
+
     location = /dashboard/transactions {
         proxy_pass ${BACKEND_BASE_URL}/dashboard/transactions;
     }
