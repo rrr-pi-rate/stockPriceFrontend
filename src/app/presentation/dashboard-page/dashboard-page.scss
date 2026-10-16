@@ -74,9 +74,7 @@ kirby-card {
   }
 
   .toolbar-badge {
-    order: 3;
-    grid-column: 1 / -1;
-    justify-self: start;
+    display: none;
   }
 }
 
