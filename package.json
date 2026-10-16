@@ -9,7 +9,9 @@
     "test": "ng test",
     "openapi": "openapi-generator-cli generate -i ./openapi/openapi.dashboard.yaml -g typescript-angular -o ./generated/api --additional-properties=ngVersion=21.2.24",
     "lint": "ng lint",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "start:mobile": "ng serve --host 0.0.0.0",
+    "_comment": "use 192.168.1.249:4200"
   },
   "private": true,
   "packageManager": "npm@12.2.0",

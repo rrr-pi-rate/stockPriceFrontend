@@ -41,14 +41,17 @@
         <kirby-page-title>Indstillinger</kirby-page-title>
         <div class="settings-content">
           <div class="settings-row">
-            <span>Benchmark</span>
-            <kirby-toggle aria-label="Benchmark" [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)"></kirby-toggle>
-          </div>
-          <app-benchmark-picker [expand]="true" [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
-          <div class="settings-row">
             <span>Trendlinje</span>
-            <kirby-toggle aria-label="Trendlinje" [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)"></kirby-toggle>
+            <kirby-toggle aria-label="Trendlinje" [checked]="trendEnabled()"
+                          (checkedChange)="trendEnabled.set($event)"></kirby-toggle>
           </div>
+          <div class="settings-row">
+            <span>Benchmark</span>
+            <kirby-toggle aria-label="Benchmark" [checked]="benchmarkEnabled()"
+                          (checkedChange)="benchmarkEnabled.set($event)"></kirby-toggle>
+          </div>
+          <app-benchmark-picker [expand]="true" [benchmark]="benchmark()"
+                                (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
         </div>
       </ng-template>
     </kirby-modal>
@@ -74,7 +77,8 @@
       <kirby-toggle [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
+      <app-benchmark-picker [benchmark]="returnBenchmark()"
+                            (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
 
       <kirby-toggle [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
         Trendlinje
@@ -88,14 +92,17 @@
         <kirby-page-title>Indstillinger</kirby-page-title>
         <div class="settings-content">
           <div class="settings-row">
-            <span>Benchmark</span>
-            <kirby-toggle aria-label="Benchmark" [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)"></kirby-toggle>
-          </div>
-          <app-benchmark-picker [expand]="true" [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
-          <div class="settings-row">
             <span>Trendlinje</span>
-            <kirby-toggle aria-label="Trendlinje" [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)"></kirby-toggle>
+            <kirby-toggle [checked]="returnTrendEnabled()"
+                          (checkedChange)="returnTrendEnabled.set($event)"></kirby-toggle>
           </div>
+          <div class="settings-row">
+            <span>Benchmark</span>
+            <kirby-toggle [checked]="returnBenchmarkEnabled()"
+                          (checkedChange)="returnBenchmarkEnabled.set($event)"></kirby-toggle>
+          </div>
+          <app-benchmark-picker [expand]="true " [benchmark]="returnBenchmark()"
+                                (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
         </div>
       </ng-template>
     </kirby-modal>
