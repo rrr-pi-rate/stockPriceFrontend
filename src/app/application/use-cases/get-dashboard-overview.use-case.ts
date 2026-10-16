@@ -16,8 +16,8 @@ import {
 } from '../../domain/calculations/portfolio-stats.calculator';
 import {
   computePeriodReturn,
-  computeReturnBenchmarkLine,
-  computeReturnLine,
+  computeReturnBenchmarkPercentLine,
+  computeReturnPercentLine,
 } from '../../domain/calculations/return.calculator';
 import { computeTrendLine } from '../../domain/calculations/trend.calculator';
 import { Deposit } from '../../domain/models/deposit.model';
@@ -32,6 +32,9 @@ import { DashboardRepositoryPort } from '../ports/outbound/dashboard-repository.
 import { BenchmarkPoint } from '../../domain/models/benchmark-point.model';
 import { BenchmarkKind, isLiveBenchmark } from '../../domain/models/benchmark.model';
 import { BenchmarkLineProviderPort } from '../ports/outbound/benchmark-line-provider.port';
+
+/** Percent values are small, so the return trend keeps 4 decimals instead of whole units. */
+const RETURN_TREND_DECIMALS = 4;
 
 export type BenchmarkSource =
   | { readonly kind: 'rate'; readonly rates: BenchmarkRates }
@@ -61,7 +64,8 @@ export function buildOverview(
 
   const benchmarkLine = benchmarkLineFor(periodEntries, options.benchmark, benchmarkSource);
 
-  const returnLine = deposits.length > 0 ? computeReturnLine(periodEntries, deposits) : null;
+  const returnPercentLine =
+    deposits.length > 0 ? computeReturnPercentLine(periodEntries, deposits) : null;
   const returnBenchmarkBase = benchmarkLineFor(
     periodEntries,
     options.returnBenchmark,
@@ -84,15 +88,16 @@ export function buildOverview(
       volatility: volatility(periodEntries),
       trendLine: options.includeTrend ? computeTrendLine(periodEntries) : null,
       benchmarkLine,
-      returnLine,
+      returnPercentLine,
       returnBenchmarkLine:
-        returnLine && returnBenchmarkBase
-          ? computeReturnBenchmarkLine(periodEntries, returnLine, returnBenchmarkBase)
+        returnPercentLine && returnBenchmarkBase
+          ? computeReturnBenchmarkPercentLine(periodEntries, deposits, returnBenchmarkBase)
           : null,
       returnTrendLine:
-        returnLine && options.includeReturnTrend
+        returnPercentLine && options.includeReturnTrend
           ? computeTrendLine(
-              periodEntries.map((entry, i) => ({ date: entry.date, value: returnLine[i] })),
+              periodEntries.map((entry, i) => ({ date: entry.date, value: returnPercentLine[i] })),
+              RETURN_TREND_DECIMALS,
             )
           : null,
       periodReturn: deposits.length > 0 ? computePeriodReturn(periodEntries, deposits) : null,

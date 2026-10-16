@@ -36,7 +36,7 @@
   </kirby-card>
 
   @if (overview()?.period; as periodView) {
-  @if (periodView.returnLine; as returnLine) {
+  @if (periodView.returnPercentLine; as returnPercentLine) {
   <kirby-card hasPadding="true">
     <h2 class="chart-title">Afkast i %</h2>
     <div class="chart-toolbar">
@@ -53,7 +53,7 @@
     </div>
     <app-return-chart
       [entries]="periodView.entries"
-      [returnLine]="returnLine"
+      [returnPercentLine]="returnPercentLine"
       [benchmarkLine]="periodView.returnBenchmarkLine"
       [trendLine]="periodView.returnTrendLine"></app-return-chart>
   </kirby-card>

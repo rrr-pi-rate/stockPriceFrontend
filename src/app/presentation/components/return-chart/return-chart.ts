@@ -4,9 +4,10 @@ import { LineChart } from '../line-chart/line-chart';
 import { buildReturnChartDatasets } from '../portfolio-chart/portfolio-chart-datasets';
 
 /**
- * Afkast i kr.: porteføljeværdi minus alle indbetalinger til og med datoen. `entries` leverer
- * datoerne (x-aksen), `returnLine` er afkastet pr. entry (se computeReturnLine). Benchmark og
- * trendlinje er valgfrie og i samme enhed (kr. afkast), se computeReturnBenchmarkLine.
+ * Afkast i %: gevinsten siden periodens start (værdi minus indbetalinger) i forhold til den
+ * tidsvægtede kapital, se computeReturnPercentLine. `entries` leverer datoerne (x-aksen),
+ * `returnPercentLine` er afkastet pr. entry. Benchmark og trendlinje er valgfrie og i samme
+ * enhed (%), se computeReturnBenchmarkPercentLine.
  */
 @Component({
   selector: 'app-return-chart',
@@ -16,12 +17,12 @@ import { buildReturnChartDatasets } from '../portfolio-chart/portfolio-chart-dat
 })
 export class ReturnChart {
   readonly entries = input.required<readonly PortfolioDataPoint[]>();
-  readonly returnLine = input.required<readonly number[]>();
+  readonly returnPercentLine = input.required<readonly number[]>();
   readonly benchmarkLine = input<readonly (number | null)[] | null>(null);
   readonly trendLine = input<readonly number[] | null>(null);
 
   protected readonly labels = computed(() => this.entries().map((entry) => entry.date));
   protected readonly datasets = computed(() =>
-    buildReturnChartDatasets(this.returnLine(), this.benchmarkLine(), this.trendLine()),
+    buildReturnChartDatasets(this.returnPercentLine(), this.benchmarkLine(), this.trendLine()),
   );
 }

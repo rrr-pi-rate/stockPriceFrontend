@@ -14,6 +14,11 @@ export function formatPercentage(value: number): string {
   return `${value >= 0 ? '+' : ''}${value.toFixed(2)} %`;
 }
 
+/** Short percentage for chart axes, e.g. "-2,5 %" (at most one decimal, no forced plus sign). */
+export function formatAxisPercentage(value: number): string {
+  return value.toLocaleString('da-DK', { maximumFractionDigits: 1 }) + ' %';
+}
+
 export function formatCompactNumber(value: number): string {
   if (Math.abs(value) >= 1e6) {
     return (value / 1e6).toLocaleString('da-DK', { maximumFractionDigits: 1 }) + 'M';

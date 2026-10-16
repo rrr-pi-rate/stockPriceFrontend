@@ -59,12 +59,12 @@ describe('buildOverview', () => {
     expect(overview.period.entries).toEqual([entries[4]]);
   });
 
-  it('has no return line without deposits', () => {
+  it('has no return chart line without deposits', () => {
     const overview = buildOverview(entries, { kind: 'all' }, {}, null, referenceDate);
-    expect(overview.period.returnLine).toBeNull();
+    expect(overview.period.returnPercentLine).toBeNull();
   });
 
-  it('subtracts cumulative deposits from the value, using deposits from before the period', () => {
+  it('measures the return from the start of the period, with deposits from before it subtracted', () => {
     const periodReferenceDate = new Date('2026-01-05T00:00:00Z');
     const deposits = [
       { date: '2026-01-01', amount: 1000 },
@@ -78,7 +78,8 @@ describe('buildOverview', () => {
       periodReferenceDate,
       deposits,
     );
-    expect(overview.period.returnLine).toEqual([50, 30]);
+    // 4th: 1100 - 1050 deposited = 50; 5th: 1080 - 1050 = 30. Gain -20 on capital 1100.
+    expect(overview.period.returnPercentLine).toEqual([0, (-20 / 1100) * 100]);
   });
 
   describe('return chart overlays', () => {
@@ -87,32 +88,33 @@ describe('buildOverview', () => {
 
     it('has no return benchmark or trend unless the return chart asks for them', () => {
       const overview = buildOverview(entries, { kind: 'all' }, {}, null, referenceDate, deposits);
-      expect(overview.period.returnLine).toEqual([0, 50, 30, 100, 80]);
+      // 1000 deposited on the first date, so the gain is the value change on a capital of 1000.
+      expect(overview.period.returnPercentLine).toEqual([0, 5, 3, 10, 8]);
       expect(overview.period.returnBenchmarkLine).toBeNull();
       expect(overview.period.returnTrendLine).toBeNull();
     });
 
-    it('builds the return benchmark from the return chart option, starting level with the return', () => {
+    it('builds the return benchmark in % from the return chart option, starting at 0 %', () => {
       const overview = buildOverview(
         entries,
         { kind: 'all' },
-        { returnBenchmark: 'bonds' },
+        { returnBenchmark: 'msci' },
         null,
         referenceDate,
         deposits,
         source,
       );
       const line = overview.period.returnBenchmarkLine;
-      expect(line?.[0]).toBeCloseTo(0, 5);
-      // one day at 3 %/year on 1000 invested: 1000 * (1.03^(1/365) - 1)
-      expect(line?.[1]).toBeCloseTo(1000 * (Math.pow(1.03, 1 / 365) - 1), 5);
+      expect(line?.[0]).toBe(0);
+      // one day at 10 %/year, no deposits after the start: (1.1^(1/365) - 1) * 100
+      expect(line?.[1]).toBeCloseTo((Math.pow(1.1, 1 / 365) - 1) * 100, 5);
     });
 
     it('keeps the portfolio chart and the return chart overlays independent', () => {
       const portfolioOnly = buildOverview(
         entries,
         { kind: 'all' },
-        { benchmark: 'bonds', includeTrend: true },
+        { benchmark: 'msci', includeTrend: true },
         source,
         referenceDate,
         deposits,
@@ -125,7 +127,7 @@ describe('buildOverview', () => {
       const returnOnly = buildOverview(
         entries,
         { kind: 'all' },
-        { returnBenchmark: 'bonds', includeReturnTrend: true },
+        { returnBenchmark: 'msci', includeReturnTrend: true },
         null,
         referenceDate,
         deposits,
@@ -137,7 +139,7 @@ describe('buildOverview', () => {
       expect(returnOnly.period.returnTrendLine).toHaveLength(5);
     });
 
-    it('fits the return trend to the return line, not to the portfolio value', () => {
+    it('fits the return trend to the % return line, keeping decimals', () => {
       const overview = buildOverview(
         entries,
         { kind: 'all' },
@@ -146,21 +148,21 @@ describe('buildOverview', () => {
         referenceDate,
         deposits,
       );
-      // regression over [0, 50, 30, 100, 80]: slope 210 / 10 = 21, intercept 52 - 21 * 2 = 10
-      expect(overview.period.returnTrendLine).toEqual([10, 31, 52, 73, 94]);
+      // regression over [0, 5, 3, 10, 8]: slope 21 / 10 = 2.1, intercept 5.2 - 2.1 * 2 = 1
+      expect(overview.period.returnTrendLine).toEqual([1, 3.1, 5.2, 7.3, 9.4]);
     });
 
     it('has no return overlays without deposits, even when asked for', () => {
       const overview = buildOverview(
         entries,
         { kind: 'all' },
-        { returnBenchmark: 'bonds', includeReturnTrend: true },
+        { returnBenchmark: 'msci', includeReturnTrend: true },
         null,
         referenceDate,
         [],
         source,
       );
-      expect(overview.period.returnLine).toBeNull();
+      expect(overview.period.returnPercentLine).toBeNull();
       expect(overview.period.returnBenchmarkLine).toBeNull();
       expect(overview.period.returnTrendLine).toBeNull();
     });

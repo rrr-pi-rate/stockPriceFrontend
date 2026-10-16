@@ -1,7 +1,13 @@
 import { PortfolioDataPoint } from '../models/portfolio-data-point.model';
 
-/** Least-squares linear regression over the entry index, rounded to whole units to match the chart's original resolution. */
-export function computeTrendLine(entries: readonly PortfolioDataPoint[]): number[] {
+/**
+ * Least-squares linear regression over the entry index, rounded to `decimals` places (whole
+ * units by default, to match the chart's original resolution; use more for small values like %).
+ */
+export function computeTrendLine(
+  entries: readonly PortfolioDataPoint[],
+  decimals = 0,
+): number[] {
   const n = entries.length;
   if (n < 2) return [];
 
@@ -19,5 +25,6 @@ export function computeTrendLine(entries: readonly PortfolioDataPoint[]): number
   const slope = numerator / denominator;
   const intercept = meanY - slope * meanX;
 
-  return Array.from({ length: n }, (_, x) => Math.round(slope * x + intercept));
+  const scale = 10 ** decimals;
+  return Array.from({ length: n }, (_, x) => Math.round((slope * x + intercept) * scale) / scale);
 }

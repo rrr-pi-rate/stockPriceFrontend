@@ -33,14 +33,14 @@ export function buildChartDatasets(
 
 /** Same stable-three-datasets contract as buildChartDatasets, for the return chart. */
 export function buildReturnChartDatasets(
-  returnLine: readonly number[],
+  returnPercentLine: readonly number[],
   benchmarkLine: readonly (number | null)[] | null,
   trendLine: readonly number[] | null,
 ): LineChartDataset[] {
   return [
     {
       label: 'Afkast',
-      data: [...returnLine],
+      data: [...returnPercentLine],
       borderColor: '#00a976',
       backgroundColor: 'rgba(0, 169, 118, 0.2)',
       borderWidth: 2,
