@@ -1,4 +1,5 @@
 import { firstValueFrom, Observable, of } from 'rxjs';
+import { Deposit } from '../../domain/models/deposit.model';
 import { PortfolioDataPoint } from '../../domain/models/portfolio-data-point.model';
 import { BenchmarkPoint } from '../../domain/models/benchmark-point.model';
 import { BenchmarkRateProviderPort, BenchmarkRates } from '../ports/outbound/benchmark-rate-provider.port';
@@ -88,6 +89,10 @@ class FakeDashboardRepository extends DashboardRepositoryPort {
 
   override getHistoricalData(): Observable<PortfolioDataPoint[]> {
     return of(this.entriesToReturn);
+  }
+
+  override getDeposits(): Observable<Deposit[]> {
+    return of([]);
   }
 }
 
