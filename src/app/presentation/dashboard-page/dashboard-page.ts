@@ -40,6 +40,9 @@ export class DashboardPage {
   protected readonly benchmarkEnabled = signal(false);
   protected readonly benchmark = signal<BenchmarkKind>('msci');
   protected readonly trendEnabled = signal(false);
+  protected readonly returnBenchmarkEnabled = signal(false);
+  protected readonly returnBenchmark = signal<BenchmarkKind>('msci');
+  protected readonly returnTrendEnabled = signal(false);
   protected readonly fakeData = signal(true);
 
   protected readonly periodDescription = periodDescription;
@@ -49,6 +52,8 @@ export class DashboardPage {
     options: {
       benchmark: this.benchmarkEnabled() ? this.benchmark() : undefined,
       includeTrend: this.trendEnabled(),
+      returnBenchmark: this.returnBenchmarkEnabled() ? this.returnBenchmark() : undefined,
+      includeReturnTrend: this.returnTrendEnabled(),
       dataSource: this.fakeData() ? 'fake' : 'real',
     } satisfies DashboardOverviewOptions,
   }));

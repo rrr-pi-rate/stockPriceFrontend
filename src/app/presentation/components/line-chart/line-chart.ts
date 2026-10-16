@@ -20,7 +20,12 @@ import {
   PointElement,
   Tooltip,
 } from 'chart.js';
-import { formatCompactNumber, formatCurrency } from '../../formatting/number-formatting';
+import {
+  formatAxisPercentage,
+  formatCompactNumber,
+  formatCurrency,
+  formatPercentage,
+} from '../../formatting/number-formatting';
 
 Chart.register(
   LineController,
@@ -81,6 +86,8 @@ export class LineChart implements AfterViewInit, OnDestroy {
   readonly labels = input.required<readonly string[]>();
   readonly datasets = input.required<readonly LineChartDataset[]>();
   readonly height = input(400);
+  /** Unit of the values: kroner (tooltip in DKK, compact axis) or percent. */
+  readonly valueFormat = input<'currency' | 'percent'>('currency');
 
   @ViewChild('canvas') private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -170,9 +177,10 @@ export class LineChart implements AfterViewInit, OnDestroy {
           callbacks: {
             label: (ctx) => {
               const value = ctx.parsed.y;
-              return value == null
-                ? `${ctx.dataset.label}: —`
-                : `${ctx.dataset.label}: ${formatCurrency(value)}`;
+              if (value == null) return `${ctx.dataset.label}: —`;
+              const formatted =
+                this.valueFormat() === 'percent' ? formatPercentage(value) : formatCurrency(value);
+              return `${ctx.dataset.label}: ${formatted}`;
             },
           },
         },
@@ -185,7 +193,10 @@ export class LineChart implements AfterViewInit, OnDestroy {
         y: {
           ticks: {
             color: '#5c6b66',
-            callback: (value) => formatCompactNumber(Number(value)),
+            callback: (value) =>
+              this.valueFormat() === 'percent'
+                ? formatAxisPercentage(Number(value))
+                : formatCompactNumber(Number(value)),
           },
           grid: { color: '#eef2f0' },
         },

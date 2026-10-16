@@ -1,10 +1,13 @@
 import { Component, computed, input } from '@angular/core';
 import { PortfolioDataPoint } from '../../../domain/models/portfolio-data-point.model';
-import { LineChart, LineChartDataset } from '../line-chart/line-chart';
+import { LineChart } from '../line-chart/line-chart';
+import { buildReturnChartDatasets } from '../portfolio-chart/portfolio-chart-datasets';
 
 /**
- * Afkast i kr.: porteføljeværdi minus alle indbetalinger til og med datoen. `entries` leverer
- * datoerne (x-aksen), `returnLine` er afkastet pr. entry (se computeReturnLine).
+ * Afkast i %: gevinsten siden periodens start (værdi minus indbetalinger) i forhold til den
+ * tidsvægtede kapital, se computeReturnPercentLine. `entries` leverer datoerne (x-aksen),
+ * `returnPercentLine` er afkastet pr. entry. Benchmark og trendlinje er valgfrie og i samme
+ * enhed (%), se computeReturnBenchmarkPercentLine.
  */
 @Component({
   selector: 'app-return-chart',
@@ -14,20 +17,12 @@ import { LineChart, LineChartDataset } from '../line-chart/line-chart';
 })
 export class ReturnChart {
   readonly entries = input.required<readonly PortfolioDataPoint[]>();
-  readonly returnLine = input.required<readonly number[]>();
+  readonly returnPercentLine = input.required<readonly number[]>();
+  readonly benchmarkLine = input<readonly (number | null)[] | null>(null);
+  readonly trendLine = input<readonly number[] | null>(null);
 
   protected readonly labels = computed(() => this.entries().map((entry) => entry.date));
-  protected readonly datasets = computed<LineChartDataset[]>(() => [
-    {
-      label: 'Afkast',
-      data: this.returnLine(),
-      borderColor: '#00a976',
-      backgroundColor: 'rgba(0, 169, 118, 0.2)',
-      borderWidth: 2,
-      pointRadius: 0,
-      pointHoverRadius: 5,
-      fill: 'origin',
-      tension: 0.3,
-    },
-  ]);
+  protected readonly datasets = computed(() =>
+    buildReturnChartDatasets(this.returnPercentLine(), this.benchmarkLine(), this.trendLine()),
+  );
 }

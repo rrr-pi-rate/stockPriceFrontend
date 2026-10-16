@@ -6,6 +6,9 @@ import { ValueChange } from '../../domain/models/value-change.model';
 export interface DashboardOverviewOptions {
   readonly benchmark?: BenchmarkKind;
   readonly includeTrend?: boolean;
+  /** Benchmark / trend for the return chart - independent of the portfolio chart's. */
+  readonly returnBenchmark?: BenchmarkKind;
+  readonly includeReturnTrend?: boolean;
   readonly dataSource?: DataSource;
 }
 
@@ -25,8 +28,16 @@ export interface DashboardPeriodView {
   readonly volatility: number | null;
   readonly trendLine: readonly number[] | null;
   readonly benchmarkLine: readonly (number | null)[] | null;
-  /** Value minus cumulative deposits per entry; null when no deposits are known. */
-  readonly returnLine: readonly number[] | null;
+  /**
+   * Return chart, all in % since the start of the period (see computeReturnPercentLine): the
+   * portfolio's return, the benchmark's on the same deposits, and a trend through the portfolio's.
+   * Null when no deposits are known (or there is no capital to relate the gain to).
+   */
+  readonly returnPercentLine: readonly number[] | null;
+  readonly returnBenchmarkLine: readonly (number | null)[] | null;
+  readonly returnTrendLine: readonly number[] | null;
+  /** Deposit-adjusted return over the period (DKK and %); null without deposits or enough data. */
+  readonly periodReturn: ValueChange | null;
 }
 
 export interface DashboardOverview {

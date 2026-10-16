@@ -26,32 +26,64 @@ export function buildChartDatasets(
       tension: 0.3,
       order: 1,
     },
-    {
-      label: 'Benchmark',
-      data: benchmarkLine ? [...benchmarkLine] : [],
-      borderColor: '#c68a00',
-      backgroundColor: 'transparent',
-      borderWidth: 1.5,
-      borderDash: [5, 4],
-      pointRadius: 0,
-      pointHoverRadius: 4,
-      fill: false,
-      tension: 0.3,
-      order: 2,
-      spanGaps: true,
-    },
-    {
-      label: 'Trend',
-      data: trendLine ? [...trendLine] : [],
-      borderColor: 'rgba(142, 26, 51, 0.7)',
-      backgroundColor: 'transparent',
-      borderWidth: 1.5,
-      borderDash: [3, 3],
-      pointRadius: 0,
-      pointHoverRadius: 0,
-      fill: false,
-      tension: 0,
-      order: 3,
-    },
+    benchmarkDataset(benchmarkLine),
+    trendDataset(trendLine),
   ];
+}
+
+/** Same stable-three-datasets contract as buildChartDatasets, for the return chart. */
+export function buildReturnChartDatasets(
+  returnPercentLine: readonly number[],
+  benchmarkLine: readonly (number | null)[] | null,
+  trendLine: readonly number[] | null,
+): LineChartDataset[] {
+  return [
+    {
+      label: 'Afkast',
+      data: [...returnPercentLine],
+      borderColor: '#00a976',
+      backgroundColor: 'rgba(0, 169, 118, 0.2)',
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      fill: 'origin',
+      tension: 0.3,
+      order: 1,
+    },
+    benchmarkDataset(benchmarkLine),
+    trendDataset(trendLine),
+  ];
+}
+
+function benchmarkDataset(benchmarkLine: readonly (number | null)[] | null): LineChartDataset {
+  return {
+    label: 'Benchmark',
+    data: benchmarkLine ? [...benchmarkLine] : [],
+    borderColor: '#c68a00',
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderDash: [5, 4],
+    pointRadius: 0,
+    pointHoverRadius: 4,
+    fill: false,
+    tension: 0.3,
+    order: 2,
+    spanGaps: true,
+  };
+}
+
+function trendDataset(trendLine: readonly number[] | null): LineChartDataset {
+  return {
+    label: 'Trend',
+    data: trendLine ? [...trendLine] : [],
+    borderColor: 'rgba(142, 26, 51, 0.7)',
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderDash: [3, 3],
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    fill: false,
+    tension: 0,
+    order: 3,
+  };
 }

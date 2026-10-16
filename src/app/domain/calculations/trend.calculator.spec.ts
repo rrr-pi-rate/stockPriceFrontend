@@ -19,4 +19,11 @@ describe('computeTrendLine', () => {
     const result = computeTrendLine(points([1000, 1050, 1030, 1100, 1080]));
     expect(result).toEqual([1010, 1031, 1052, 1073, 1094]);
   });
+
+  it('keeps the requested number of decimals, so small values such as percentages survive', () => {
+    // slope 0.52, intercept 0.52
+    const values = points([0.5, 1.0, 1.7, 2.0]);
+    expect(computeTrendLine(values, 2)).toEqual([0.52, 1.04, 1.56, 2.08]);
+    expect(computeTrendLine(values)).toEqual([1, 1, 2, 2]);
+  });
 });
