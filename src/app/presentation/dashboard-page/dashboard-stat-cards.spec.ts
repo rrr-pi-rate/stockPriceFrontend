@@ -21,6 +21,8 @@ const overview: DashboardOverview = {
     trendLine: null,
     benchmarkLine: null,
     returnLine: null,
+    returnBenchmarkLine: null,
+    returnTrendLine: null,
     periodReturn: { absolute: 50, percentage: 4.5 },
   },
 };
@@ -57,10 +59,10 @@ describe('buildStatCards', () => {
     expect(cards[4]).toMatchObject({ label: 'Change in the period', tone: 'positive', sub: '+8.00 %' });
     expect(cards[5]).toMatchObject({
       label: 'Return in the period',
-      value: '+4.50 %',
+      sub: '+4.50 %',
       tone: 'positive',
     });
-    expect(cards[5].sub).toContain('50');
+    expect(cards[5].value).toContain('50');
     expect(cards[6]).toMatchObject({
       label: 'Data points in the period',
       value: '5',

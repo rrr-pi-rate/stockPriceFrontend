@@ -40,18 +40,22 @@
   <kirby-card hasPadding="true">
     <h2 class="chart-title">Afkast i %</h2>
     <div class="chart-toolbar">
-      <kirby-toggle [checked]="benchmarkEnabled()" (checkedChange)="benchmarkEnabled.set($event)">
+      <kirby-toggle [checked]="returnBenchmarkEnabled()" (checkedChange)="returnBenchmarkEnabled.set($event)">
         Benchmark
       </kirby-toggle>
-      <app-benchmark-picker [benchmark]="benchmark()" (benchmarkChange)="benchmark.set($event)"></app-benchmark-picker>
+      <app-benchmark-picker [benchmark]="returnBenchmark()" (benchmarkChange)="returnBenchmark.set($event)"></app-benchmark-picker>
 
-      <kirby-toggle [checked]="trendEnabled()" (checkedChange)="trendEnabled.set($event)">
+      <kirby-toggle [checked]="returnTrendEnabled()" (checkedChange)="returnTrendEnabled.set($event)">
         Trendlinje
       </kirby-toggle>
 
       <kirby-badge>{{ periodDescription(period()) }}</kirby-badge>
     </div>
-    <app-return-chart [entries]="periodView.entries" [returnLine]="returnLine"></app-return-chart>
+    <app-return-chart
+      [entries]="periodView.entries"
+      [returnLine]="returnLine"
+      [benchmarkLine]="periodView.returnBenchmarkLine"
+      [trendLine]="periodView.returnTrendLine"></app-return-chart>
   </kirby-card>
   }
   }

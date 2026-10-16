@@ -14,7 +14,11 @@ import {
   volatility,
   yearToDateChange,
 } from '../../domain/calculations/portfolio-stats.calculator';
-import { computePeriodReturn, computeReturnLine } from '../../domain/calculations/return.calculator';
+import {
+  computePeriodReturn,
+  computeReturnBenchmarkLine,
+  computeReturnLine,
+} from '../../domain/calculations/return.calculator';
 import { computeTrendLine } from '../../domain/calculations/trend.calculator';
 import { Deposit } from '../../domain/models/deposit.model';
 import { Period } from '../../domain/models/period.model';
@@ -33,6 +37,17 @@ export type BenchmarkSource =
   | { readonly kind: 'rate'; readonly rates: BenchmarkRates }
   | { readonly kind: 'line'; readonly points: readonly BenchmarkPoint[] };
 
+function benchmarkLineFor(
+  entries: readonly PortfolioDataPoint[],
+  benchmark: BenchmarkKind | undefined,
+  source: BenchmarkSource | null,
+): (number | null)[] | null {
+  if (!benchmark || !source) return null;
+  return source.kind === 'rate'
+    ? computeBenchmarkLine(entries, source.rates[benchmark])
+    : alignBenchmarkLine(entries, source.points);
+}
+
 export function buildOverview(
   allEntries: readonly PortfolioDataPoint[],
   period: Period,
@@ -40,15 +55,18 @@ export function buildOverview(
   benchmarkSource: BenchmarkSource | null,
   referenceDate: Date = new Date(),
   deposits: readonly Deposit[] = [],
+  returnBenchmarkSource: BenchmarkSource | null = null,
 ): DashboardOverview {
   const periodEntries = filterByPeriod(allEntries, period, referenceDate);
 
-  const benchmarkLine =
-    options.benchmark && benchmarkSource
-      ? benchmarkSource.kind === 'rate'
-        ? computeBenchmarkLine(periodEntries, benchmarkSource.rates[options.benchmark])
-        : alignBenchmarkLine(periodEntries, benchmarkSource.points)
-      : null;
+  const benchmarkLine = benchmarkLineFor(periodEntries, options.benchmark, benchmarkSource);
+
+  const returnLine = deposits.length > 0 ? computeReturnLine(periodEntries, deposits) : null;
+  const returnBenchmarkBase = benchmarkLineFor(
+    periodEntries,
+    options.returnBenchmark,
+    returnBenchmarkSource,
+  );
 
   return {
     summary: {
@@ -66,7 +84,17 @@ export function buildOverview(
       volatility: volatility(periodEntries),
       trendLine: options.includeTrend ? computeTrendLine(periodEntries) : null,
       benchmarkLine,
-      returnLine: deposits.length > 0 ? computeReturnLine(periodEntries, deposits) : null,
+      returnLine,
+      returnBenchmarkLine:
+        returnLine && returnBenchmarkBase
+          ? computeReturnBenchmarkLine(periodEntries, returnLine, returnBenchmarkBase)
+          : null,
+      returnTrendLine:
+        returnLine && options.includeReturnTrend
+          ? computeTrendLine(
+              periodEntries.map((entry, i) => ({ date: entry.date, value: returnLine[i] })),
+            )
+          : null,
       periodReturn: deposits.length > 0 ? computePeriodReturn(periodEntries, deposits) : null,
     },
   };
@@ -85,15 +113,14 @@ export class GetDashboardOverviewUseCase {
     options: DashboardOverviewOptions = {},
     referenceDate: Date = new Date(),
   ): Observable<DashboardOverview> {
-    const source$: Observable<BenchmarkSource | null> = this.getBenchmarkSource$(options.benchmark);
-
     return combineLatest([
       this.dashboardRepository.getHistoricalData(options.dataSource),
-      source$,
+      this.getBenchmarkSource$(options.benchmark),
       this.dashboardRepository.getDeposits(options.dataSource),
+      this.getBenchmarkSource$(options.returnBenchmark),
     ]).pipe(
-      map(([allEntries, source, deposits]) =>
-        buildOverview(allEntries, period, options, source, referenceDate, deposits),
+      map(([allEntries, source, deposits, returnSource]) =>
+        buildOverview(allEntries, period, options, source, referenceDate, deposits, returnSource),
       ),
     );
   }

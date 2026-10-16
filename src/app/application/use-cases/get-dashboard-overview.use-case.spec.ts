@@ -80,6 +80,91 @@ describe('buildOverview', () => {
     );
     expect(overview.period.returnLine).toEqual([50, 30]);
   });
+
+  describe('return chart overlays', () => {
+    const deposits = [{ date: '2026-01-01', amount: 1000 }];
+    const source = { kind: 'rate' as const, rates };
+
+    it('has no return benchmark or trend unless the return chart asks for them', () => {
+      const overview = buildOverview(entries, { kind: 'all' }, {}, null, referenceDate, deposits);
+      expect(overview.period.returnLine).toEqual([0, 50, 30, 100, 80]);
+      expect(overview.period.returnBenchmarkLine).toBeNull();
+      expect(overview.period.returnTrendLine).toBeNull();
+    });
+
+    it('builds the return benchmark from the return chart option, starting level with the return', () => {
+      const overview = buildOverview(
+        entries,
+        { kind: 'all' },
+        { returnBenchmark: 'bonds' },
+        null,
+        referenceDate,
+        deposits,
+        source,
+      );
+      const line = overview.period.returnBenchmarkLine;
+      expect(line?.[0]).toBeCloseTo(0, 5);
+      // one day at 3 %/year on 1000 invested: 1000 * (1.03^(1/365) - 1)
+      expect(line?.[1]).toBeCloseTo(1000 * (Math.pow(1.03, 1 / 365) - 1), 5);
+    });
+
+    it('keeps the portfolio chart and the return chart overlays independent', () => {
+      const portfolioOnly = buildOverview(
+        entries,
+        { kind: 'all' },
+        { benchmark: 'bonds', includeTrend: true },
+        source,
+        referenceDate,
+        deposits,
+      );
+      expect(portfolioOnly.period.benchmarkLine).not.toBeNull();
+      expect(portfolioOnly.period.trendLine).not.toBeNull();
+      expect(portfolioOnly.period.returnBenchmarkLine).toBeNull();
+      expect(portfolioOnly.period.returnTrendLine).toBeNull();
+
+      const returnOnly = buildOverview(
+        entries,
+        { kind: 'all' },
+        { returnBenchmark: 'bonds', includeReturnTrend: true },
+        null,
+        referenceDate,
+        deposits,
+        source,
+      );
+      expect(returnOnly.period.benchmarkLine).toBeNull();
+      expect(returnOnly.period.trendLine).toBeNull();
+      expect(returnOnly.period.returnBenchmarkLine).not.toBeNull();
+      expect(returnOnly.period.returnTrendLine).toHaveLength(5);
+    });
+
+    it('fits the return trend to the return line, not to the portfolio value', () => {
+      const overview = buildOverview(
+        entries,
+        { kind: 'all' },
+        { includeReturnTrend: true },
+        null,
+        referenceDate,
+        deposits,
+      );
+      // regression over [0, 50, 30, 100, 80]: slope 210 / 10 = 21, intercept 52 - 21 * 2 = 10
+      expect(overview.period.returnTrendLine).toEqual([10, 31, 52, 73, 94]);
+    });
+
+    it('has no return overlays without deposits, even when asked for', () => {
+      const overview = buildOverview(
+        entries,
+        { kind: 'all' },
+        { returnBenchmark: 'bonds', includeReturnTrend: true },
+        null,
+        referenceDate,
+        [],
+        source,
+      );
+      expect(overview.period.returnLine).toBeNull();
+      expect(overview.period.returnBenchmarkLine).toBeNull();
+      expect(overview.period.returnTrendLine).toBeNull();
+    });
+  });
 });
 
 class FakeDashboardRepository extends DashboardRepositoryPort {

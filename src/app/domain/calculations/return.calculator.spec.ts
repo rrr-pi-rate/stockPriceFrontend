@@ -1,4 +1,55 @@
-import { computePeriodReturn, computeReturnLine } from './return.calculator';
+import {
+  computePeriodReturn,
+  computeReturnBenchmarkLine,
+  computeReturnLine,
+} from './return.calculator';
+
+describe('computeReturnBenchmarkLine', () => {
+  const entries = [
+    { date: '2026-01-01', value: 1000 },
+    { date: '2026-01-02', value: 1100 },
+    { date: '2026-01-03', value: 1300 },
+  ];
+  // 200 deposited on the last date: value 1300 = 1100 market value + 200.
+  const returnLine = [1000, 1100, 1100];
+
+  it('grows capital with the benchmark and adds later deposits against the same total deposited', () => {
+    const line = computeReturnBenchmarkLine(entries, returnLine, [1000, 1050, 1102.5]);
+
+    expect(line[0]).toBeCloseTo(1000, 5);
+    expect(line[1]).toBeCloseTo(1050, 5); // 1000 grown 5 %
+    expect(line[2]).toBeCloseTo(1102.5, 5); // 1050 -> 1102.5, then +200 deposit, against 1200 invested
+  });
+
+  it('stays flat at the starting return when the benchmark does not move, deposits or not', () => {
+    const line = computeReturnBenchmarkLine(entries, returnLine, [1000, 1000, 1000]);
+    expect(line).toEqual([1000, 1000, 1000]);
+  });
+
+  it('is null before the first benchmark point and starts level with the portfolio there', () => {
+    const line = computeReturnBenchmarkLine(entries, returnLine, [null, 1000, 1100]);
+
+    expect(line[0]).toBeNull();
+    expect(line[1]).toBe(1100); // returnLine at the anchor
+    // capital 1100 grows 10 % to 1210, +200 deposit = 1410, invested 1100 + 200 = 1300
+    expect(line[2]).toBeCloseTo(1100 + (1410 - 1300), 5);
+  });
+
+  it('carries the last benchmark value over a gap', () => {
+    const line = computeReturnBenchmarkLine(entries, returnLine, [1000, null, 1100]);
+    // gap: no growth, no deposit => stays at 1000; then +10 % and the 200 deposit
+    expect(line[1]).toBeCloseTo(1000, 5);
+    expect(line[2]).toBeCloseTo(1000 + (1100 + 200 - 1200), 5);
+  });
+
+  it('is all null when there is no benchmark data', () => {
+    expect(computeReturnBenchmarkLine(entries, returnLine, [null, null, null])).toEqual([
+      null,
+      null,
+      null,
+    ]);
+  });
+});
 
 describe('computePeriodReturn', () => {
   const period = [

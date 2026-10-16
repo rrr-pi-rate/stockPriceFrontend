@@ -24,6 +24,41 @@ export function computeReturnLine(
 }
 
 /**
+ * Return line for "what if the same money had gone into the benchmark": level with the
+ * portfolio's return at the first benchmark point, after which the capital grows with the
+ * benchmark and every later deposit is added, all measured against the same total deposited.
+ * `benchmarkLine` is the value-rebased line from the portfolio chart - only its growth from
+ * point to point is used. Null before the first benchmark point; a gap carries the last value.
+ */
+export function computeReturnBenchmarkLine(
+  entries: readonly PortfolioDataPoint[],
+  returnLine: readonly number[],
+  benchmarkLine: readonly (number | null)[],
+): (number | null)[] {
+  const anchor = benchmarkLine.findIndex((value) => value != null);
+  const result: (number | null)[] = entries.map(() => null);
+  if (anchor === -1) return result;
+
+  let lastBenchmark = benchmarkLine[anchor] as number;
+  let benchmarkCapital = entries[anchor].value;
+  let invested = entries[anchor].value;
+  result[anchor] = returnLine[anchor];
+
+  for (let i = anchor + 1; i < entries.length; i++) {
+    const deposit =
+      entries[i].value - returnLine[i] - (entries[i - 1].value - returnLine[i - 1]);
+    const benchmark = benchmarkLine[i] ?? lastBenchmark;
+
+    benchmarkCapital = benchmarkCapital * (benchmark / lastBenchmark) + deposit;
+    invested += deposit;
+    lastBenchmark = benchmark;
+    result[i] = returnLine[anchor] + (benchmarkCapital - invested);
+  }
+
+  return result;
+}
+
+/**
  * Real return over `entries` (one period): the gain not explained by deposits, in DKK and %.
  * Amount = return at the end minus return at the start (see computeReturnLine). Percentage uses
  * Modified Dietz: gain divided by the start value plus each in-period deposit weighted by how
