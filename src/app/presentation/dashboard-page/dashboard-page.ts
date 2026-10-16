@@ -45,6 +45,7 @@ export class DashboardPage {
   private readonly getDashboardOverview = inject(GetDashboardOverviewUseCase);
 
   protected readonly period = signal<Period>({ kind: 'all' });
+  protected readonly returnPeriod = signal<Period>({ kind: 'all' });
   protected readonly benchmarkEnabled = signal(false);
   protected readonly benchmark = signal<BenchmarkKind>('msci');
   protected readonly trendEnabled = signal(false);
@@ -62,6 +63,14 @@ export class DashboardPage {
     options: {
       benchmark: this.benchmarkEnabled() ? this.benchmark() : undefined,
       includeTrend: this.trendEnabled(),
+      dataSource: this.fakeData() ? 'fake' : 'real',
+    } satisfies DashboardOverviewOptions,
+  }));
+
+  /** The return chart has its own period, so it gets its own overview. */
+  private readonly returnRequest = computed(() => ({
+    period: this.returnPeriod(),
+    options: {
       returnBenchmark: this.returnBenchmarkEnabled() ? this.returnBenchmark() : undefined,
       includeReturnTrend: this.returnTrendEnabled(),
       dataSource: this.fakeData() ? 'fake' : 'real',
@@ -70,6 +79,13 @@ export class DashboardPage {
 
   protected readonly overview = toSignal(
     toObservable(this.request).pipe(
+      switchMap(({ period, options }) => this.getDashboardOverview.execute(period, options)),
+    ),
+    { initialValue: null },
+  );
+
+  protected readonly returnOverview = toSignal(
+    toObservable(this.returnRequest).pipe(
       switchMap(({ period, options }) => this.getDashboardOverview.execute(period, options)),
     ),
     { initialValue: null },

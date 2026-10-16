@@ -54,8 +54,11 @@ kirby-card {
   }
 }
 
-.settings-button {
-  margin-block: var(--kirby-spacing-s);
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--kirby-spacing-s);
 }
 
 .settings-content {
@@ -71,16 +74,10 @@ kirby-card {
   justify-content: space-between;
 }
 
-.settings-title {
-  font-size: var(--kirby-font-size-l);
-  font-weight: var(--kirby-font-weight-bold);
-  margin: 0;
-}
-
 .chart-title {
   font-size: var(--kirby-font-size-m);
   font-weight: var(--kirby-font-weight-bold);
-  margin: 0 0 var(--kirby-spacing-s);
+  margin: 0;
 }
 
 .chart-toolbar {
