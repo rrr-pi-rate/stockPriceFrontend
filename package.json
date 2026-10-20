@@ -30,7 +30,7 @@
     "@kirbydesign/core": "0.0.95",
     "@kirbydesign/designsystem": "11.11.3",
     "chart.js": "^3.9.1",
-    "chartjs-adapter-date-fns": "^2.0.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^1.0.2",
     "chartjs-plugin-datalabels": "^2.0.0",
     "date-fns": "^4.1.0",
