@@ -26,7 +26,7 @@
     "@angular/router": "^21.2.24",
     "@floating-ui/dom": "^1.1.0",
     "@fontsource/roboto": "^5.2.6",
-    "@ionic/angular": "9.0.2",
+    "@ionic/angular": "9.0.9",
     "@kirbydesign/core": "0.0.95",
     "@kirbydesign/designsystem": "11.11.3",
     "chart.js": "^3.9.1",
